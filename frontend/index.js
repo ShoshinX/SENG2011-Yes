@@ -1,23 +1,3 @@
-import { setupLoginPage } from "./js/loginPage.js";
+import { initApp } from "./js/main.js";
 
-(function() {
-    let token = localStorage.getItem("token");
-    let userType = localStorage.getItem("userType");
-    switch (userType) {
-        case 'vampire':
-            //TODO
-            break;
-        case 'batMobile':
-            //TODO
-            break;
-        case 'hospital':
-            //TODO
-            break;
-        case 'Donor':
-            //TODO
-            break;
-        case null:
-        default:
-            setupLoginPage();
-    }
-})()
+initApp();

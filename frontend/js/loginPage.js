@@ -1,6 +1,13 @@
+import { initApp } from "./main.js";
+
 function setupLoginPage() {
     let body_div = document.getElementById("Content");
-    let login_div = document.getElementById("LoginForm");
+    let login_div = document.createElement("div");
+    login_div.id = "LoginForm";
+    let title = document.createElement("h1");
+    title.textContent = "VBMS";
+    login_div.appendChild(title);
+    body_div.appendChild(login_div);
     let loginForm_form = document.createElement("form");
     let loginForm_username = document.createElement("input");
     loginForm_username.type = "text";
@@ -26,6 +33,9 @@ function setupLoginPage() {
     loginForm_form.appendChild(submit_div);
     loginForm_form.addEventListener("submit", e => {
         e.preventDefault();
+        //TODO implement token for identification of specific user
+        localStorage.setItem("userType", "vampire");
+        initApp();
     });
     login_div.appendChild(loginForm_form);
 
