@@ -34,7 +34,7 @@ html {
 
 #LoginForm {
     margin: 0;
-    padding-top: 15em;
+    padding-top: 10em;
     height: 100vh;
     width: 100vw;
     text-align: center;
@@ -47,7 +47,7 @@ html {
     color: white;
 }
 
-#LoginForm a {
+#LoginForm input {
     margin-top: 2em;
     padding: 0.1em 0.5em 0.1em 0.5em;
     border: none;
@@ -63,7 +63,7 @@ html {
     font-family: "Comfortaa";
 }
 
-#LoginForm a:hover {
+#LoginForm input:hover {
     background-color: white;
     color: #33ccff;
     border: 0.1em solid #33ccff;

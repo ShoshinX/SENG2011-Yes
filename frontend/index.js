@@ -1,4 +1,4 @@
-import { setupLoginPage } from "./js/loginPage";
+import { setupLoginPage } from "./js/loginPage.js";
 
 (function() {
     let token = localStorage.getItem("token");
@@ -16,8 +16,8 @@ import { setupLoginPage } from "./js/loginPage";
         case 'Donor':
             //TODO
             break;
+        case null:
         default:
             setupLoginPage();
-
     }
-});
+})()
