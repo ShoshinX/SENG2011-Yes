@@ -4,6 +4,14 @@ module DateRep
   newtype Month = x : int | 0 <= x < 12
   newtype Year = x : int | 0 <= x < 2019
   newtype Day = x : int | 0 <= x < 31 
+  
+  method create(dd: int, mm: int, yyyy: int) returns(date: Date)
+  {
+    var d := Day(dd);
+    var m := Month(mm);
+    var y := Year(yyyy);
+    date := Date(d, m, y);
+  }
     
   datatype Date = Date(day: Day, month: Month, year: Year)
 
