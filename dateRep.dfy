@@ -19,7 +19,8 @@ module DateRep
   // Get current date
   method current() returns (d: Date)
   {
-    return create(1, 10, 2019) // idk how to implement 
+    d := Date(0,0,0);
+    // idk how to implement 
   }
 
   // d1 is before d2

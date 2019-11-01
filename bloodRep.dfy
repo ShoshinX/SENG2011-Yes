@@ -30,10 +30,11 @@ module BloodRep {
   
   method getBTasstring(bt: BloodType) returns(s: string)
   {
-    if(bt == A) {return "A";}
-    if(bt == B) {return "B";}
-    if(bt == AB) {return "AB";}
-    if(bt == O) {return "O";}
+    match bt
+    case A => return "A";
+    case B => return "B";
+    case AB => return "AB";
+    case O => return "O";
   }
   method getBloodType(br: BloodRecord) returns(bt: BloodType)
   {
@@ -50,11 +51,11 @@ module BloodRep {
   method getExpiryDate(br: BloodRecord) returns(expDate: D.Date)
   {
     return br.expiryDate;
-
-  method hasExpired(b1: BloodRecord) returns (b: bool)
+  }
+  method hasExpired(br: BloodRecord) returns (b: bool)
   {
     var current := D.current();
-    return D.LessThan(current, b1.expiryDate);
+    b := D.LessThan(current, br.expiryDate);
   }
   
 }
