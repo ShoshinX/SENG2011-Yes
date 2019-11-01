@@ -1,19 +1,17 @@
 module DateRep 
 {
   // Start a 0 bc Dafny checks for 0, ask about witnesses
-  newtype Month = x : int | 0 <= x < 12
-  newtype Year = x : int | 0 <= x < 2019
-  newtype Day = x : int | 0 <= x < 31 
+  //newtype Month = x : int | 0 <= x < 12
+  //newtype Year = x : int | 0 <= x < 2019
+  //newtype Day = x : int | 0 <= x < 31 
   
   method create(dd: int, mm: int, yyyy: int) returns(date: Date)
   {
-    var d := Day(dd);
-    var m := Month(mm);
-    var y := Year(yyyy);
-    date := Date(d, m, y);
+    if(dd > 31 || mm > 12 || yyyy > 2020) {return Date(0, 0, 0);}
+    date := Date(dd, mm, yyyy);
   }
-    
-  datatype Date = Date(day: Day, month: Month, year: Year)
+  
+  datatype Date = Date(day: int, month: int, year: int)
 
   // d1 is before d2
   method LessThan(d1:Date, d2:Date) returns (b: bool)

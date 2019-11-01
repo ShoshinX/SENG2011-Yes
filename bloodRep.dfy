@@ -27,4 +27,28 @@ module BloodRep {
     d2 := D.create(day2,month2,yr2);
     return BloodRecord(bt, l, d1, d2, isOkay);
   }
+  
+  method getBTasstring(bt: BloodType) returns(s: string)
+  {
+    if(bt == A) {return "A";}
+    if(bt == B) {return "B";}
+    if(bt == AB) {return "AB";}
+    if(bt == O) {return "O";}
+  }
+  method getBloodType(br: BloodRecord) returns(bt: BloodType)
+  {
+    return br.bType;
+  }
+  method getLocation(br: BloodRecord) returns(location: string) 
+  {
+    return br.location;
+  }
+  method getProductionDate(br: BloodRecord) returns(proDate: D.Date)
+  {
+    return br.donationDate;
+  }
+  method getExpiryDate(br: BloodRecord) returns(expDate: D.Date)
+  {
+    return br.expiryDate;
+  }
 }
