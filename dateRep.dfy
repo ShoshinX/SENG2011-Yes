@@ -1,3 +1,6 @@
+// Should only be interacted by bloodRep
+// If something doesn't exist there then make it here  and wrap it in blood
+
 module DateRep 
 {
   // Start a 0 bc Dafny checks for 0, ask about witnesses
@@ -12,6 +15,12 @@ module DateRep
   }
   
   datatype Date = Date(day: int, month: int, year: int)
+
+  // Get current date
+  method current() returns (d: Date)
+  {
+    return create(1, 10, 2019) // idk how to implement 
+  }
 
   // d1 is before d2
   method LessThan(d1:Date, d2:Date) returns (b: bool)

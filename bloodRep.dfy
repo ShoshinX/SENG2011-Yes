@@ -12,7 +12,7 @@ module BloodRep {
     case AB => (ret == AB || ret == A || ret == B || ret == O)
   }
   
-  method createbt(bType: int) returns(bt: BloodType)
+  method createBt(bType: int) returns(bt: BloodType)
   {
     if(bType == 0) {return A;}
     if(bType == 1) {return B;}
@@ -20,7 +20,7 @@ module BloodRep {
     if(bType == 3) {return O;}
   }
   
-  method createbr(bt: BloodType, l: string, day1:int,month1:int,yr1:int, day2:int,month2:int,yr2:int, isOkay: bool) returns (br: BloodRecord)
+  method createBr(bt: BloodType, l: string, day1:int,month1:int,yr1:int, day2:int,month2:int,yr2:int, isOkay: bool) returns (br: BloodRecord)
   {
     var d1: D.Date, d2: D.Date;
     d1 := D.create(day1,month1,yr1);
@@ -50,5 +50,11 @@ module BloodRep {
   method getExpiryDate(br: BloodRecord) returns(expDate: D.Date)
   {
     return br.expiryDate;
+
+  method hasExpired(b1: BloodRecord) returns (b: bool)
+  {
+    var current := D.current();
+    return D.LessThan(current, b1.expiryDate);
   }
+  
 }
