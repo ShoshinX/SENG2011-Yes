@@ -1,7 +1,7 @@
 module BloodRep {
   import D = DateRep
   datatype BloodType = A | B | AB | O // A = 0, B = 1, AB = 2, O = 3
-  datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
+  datatype BloodRecord = BloodRecord(bType: BloodType, location: int, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
 
   predicate typeValid(req: BloodType, ret: BloodType)
   {
@@ -97,7 +97,51 @@ module BloodRep {
     assert(test2 == 0); 
     assert(test3 == -1);
     assert(test4 == 1);
-    
   }
+    
+  method getBTasString(bt: BloodType) returns(s: string)
+  {
+    match bt
+    case A => return "A";
+    case B => return "B";
+    case AB => return "AB";
+    case O => return "O";
+  }
+
+  method getBTasInt(bt: BloodType) returns(i: int)
+  {
+    match bt
+    case A => return 1;
+    case B => return 2;
+    case AB => return 3;
+    case O => return 4;
+  }
+
+  method getBloodType(br: BloodRecord) returns(bt: BloodType)
+  {
+    return br.bType;
+  }
+
+  method getLocation(br: BloodRecord) returns(location: int) 
+  {
+    return br.location;
+  }
+
+  method getProductionDate(br: BloodRecord) returns(proDate: D.Date)
+  {
+    return br.donationDate;
+  }
+
+  method getExpiryDate(br: BloodRecord) returns(expDate: D.Date)
+  {
+    return br.expiryDate;
+  }
+
+  method hasExpired(br: BloodRecord) returns (b: bool)
+  {
+    var current := D.current();
+    b := D.LessThan(current, br.expiryDate);
+  }
+  
 }
 

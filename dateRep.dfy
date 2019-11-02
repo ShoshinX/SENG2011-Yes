@@ -33,15 +33,42 @@ module DateRep
     var m := mm as Month;
     var y := yyyy as Year;
     date := Date(d, m, y);
+    // if(dd > 31 || mm > 12 || yyyy > 2020) {return Date(0, 0, 0);}
+    // date := Date(dd, mm, yyyy);
   }
-    
-  datatype Date = Date(day: Day, month: Month, year: Year)
+  
+  datatype Date = Date(day: int, month: int, year: int)
 
   // Get current date
   // idk how to implement 
-  static var current := create(1,10,2019); 
+  //static var current := create(1,10,2019); 
+  method current() returns (d: Date)
+  ensures d.day == 1 as Day
+  ensures d.month == 10 as Month
+  ensures d.year == 2019 as Year
+  {
+    var day := 1;
+    var m := 10;
+    var y := 2019;
+    /*
+    assert (0 < day <= 31);
+    assert (0 < m <= 12);
+    assert (0 < y <= 2019);
+    */
+    assert validDate(day,m,y);
+  
+    assert(day == 1);
+    assert(m == 10);
+    assert(y == 2019);
+    d := create(day,m,y); 
+    assert(d.day == 1 as Day);
+    assert(d.month == 10);
+    assert(d.year == 2019);
+  }
+  
 
 
+  
   // d1 is before d2
   method lessThan(d1:Date, d2:Date) returns (b: bool)
   ensures b <==> (d1.year < d2.year) 
