@@ -34,10 +34,13 @@ html {
 
 #Content {
     margin: 0;
-    padding-top: 10em;
     height: 100vh;
     width: 100vw;
     text-align: center;
+}
+
+#LoginForm {
+    padding-top: 10em;
 }
 
 #LoginForm h1 {

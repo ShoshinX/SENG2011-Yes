@@ -1,4 +1,5 @@
 import { setupLoginPage } from "./loginPage.js";
+import { setupVampirePage } from "./VampirePage.js";
 
 function initApp() {
     let token = localStorage.getItem("token");
@@ -9,6 +10,7 @@ function initApp() {
     switch (userType) {
         case 'vampire':
             //TODO
+            setupVampirePage();
             break;
         case 'batMobile':
             //TODO
