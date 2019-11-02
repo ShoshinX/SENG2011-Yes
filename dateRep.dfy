@@ -24,28 +24,28 @@ module DateRep
   requires 0 < dd <= 31
   requires 0 < mm <= 12
   requires 0 < yyyy <= 2019
-  ensures date.day == dd as Day
-  ensures date.month == mm as Month
-  ensures date.year == yyyy as Year
   {
     assert validDate(dd, mm, yyyy);
     var d := dd as Day;
     var m := mm as Month;
     var y := yyyy as Year;
-    date := Date(d, m, y);
+    date := Date(dd, mm, yyyy);
     // if(dd > 31 || mm > 12 || yyyy > 2020) {return Date(0, 0, 0);}
     // date := Date(dd, mm, yyyy);
   }
   
   datatype Date = Date(day: int, month: int, year: int)
 
+  
   // Get current date
   // idk how to implement 
   //static var current := create(1,10,2019); 
   method current() returns (d: Date)
+  /*
   ensures d.day == 1 as Day
   ensures d.month == 10 as Month
   ensures d.year == 2019 as Year
+  */
   {
     var day := 1;
     var m := 10;
@@ -59,15 +59,14 @@ module DateRep
   
     assert(day == 1);
     assert(m == 10);
-    assert(y == 2019);
+    assert(y == 2019); 
     d := create(day,m,y); 
+    /*
     assert(d.day == 1 as Day);
     assert(d.month == 10);
     assert(d.year == 2019);
+    */
   }
-  
-
-
   
   // d1 is before d2
   method lessThan(d1:Date, d2:Date) returns (b: bool)
@@ -80,11 +79,10 @@ module DateRep
     // Compare months, overrides days if larger or uses days to resolve tie
     b := (d2.month > d1.month) || (b && d2.month == d1.month); 
     // Compare years, overrides months if larger or uses previous to resolve tie
-    b := (d2.year > d1.year) || (b && d2.year == d1.year);     
+    b := (d2.year > d1.year) || (b && d2.year == d1.year);
   }
 
   // For testing module
-  /*
   method Test()
   {
     var a := Date(1,12, 2014);
@@ -97,7 +95,19 @@ module DateRep
     assert (test1);
     assert (!test2);    
     assert (!test3);
+
+    var sameYear1 := Date(21, 2, 2015);
+    var sameYear2 := Date(11, 1, 2015);
+  
+    var testYear := lessThan(sameYear2, sameYear1);
+    assert(testYear);    
+
+    var sameYearMonth1 := Date(21, 2, 2015);
+    var sameYearMonth2 := Date(1, 2, 2015);
+
+    var testYearMonth := lessThan(sameYearMonth2, sameYearMonth1);
+    assert(testYearMonth);
+
   }
-  */
 }
 

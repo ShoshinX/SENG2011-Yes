@@ -1,7 +1,7 @@
 module BloodRep {
   import D = DateRep
   datatype BloodType = A | B | AB | O // A = 0, B = 1, AB = 2, O = 3
-  datatype BloodRecord = BloodRecord(bType: BloodType, location: int, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
+  datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
 
   predicate typeValid(req: BloodType, ret: BloodType)
   {
@@ -47,13 +47,11 @@ module BloodRep {
 
 
   method hasExpired(b1: BloodRecord) returns (b: bool)
-  ensures b <==> D.current.
-  ensures b <==> (D.current.year < b1.expiryDate.year) 
-                       || (D.current.year == b1.expiryDate.year && D.current.month < b1.expiryDate.month) 
-                       || (D.current.year == b1.expiryDate.year && D.current.month == b1.expiryDate.month && D.current.day < b1.expiryDate.day)  
+  
   {
-    b := D.lessThan(D.current, b1.expiryDate);
-    b := !b;
+    var cur := D.current();
+    var isGood := D.lessThan(cur, b1.expiryDate);
+    b := !isGood;
     // This is stupid 
     // Pls fix if you know how to do it :c
   }
@@ -93,6 +91,7 @@ module BloodRep {
     var test4 := compare(br2, br1);
 
     assert(test1);
+    assert(!test1);
     
     assert(test2 == 0); 
     assert(test3 == -1);
@@ -122,7 +121,7 @@ module BloodRep {
     return br.bType;
   }
 
-  method getLocation(br: BloodRecord) returns(location: int) 
+  method getLocation(br: BloodRecord) returns(location: string) 
   {
     return br.location;
   }
@@ -135,13 +134,5 @@ module BloodRep {
   method getExpiryDate(br: BloodRecord) returns(expDate: D.Date)
   {
     return br.expiryDate;
-  }
-
-  method hasExpired(br: BloodRecord) returns (b: bool)
-  {
-    var current := D.current();
-    b := D.LessThan(current, br.expiryDate);
-  }
-  
+  } 
 }
-
