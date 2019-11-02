@@ -48,26 +48,5 @@ module BloodRep {
     case AB => return 3;
     case O => return 4;
   }
-  method getBloodType(br: BloodRecord) returns(bt: BloodType)
-  {
-    return br.bType;
-  }
-  method getLocation(br: BloodRecord) returns(location: int) 
-  {
-    return br.location;
-  }
-  method getProductionDate(br: BloodRecord) returns(proDate: D.Date)
-  {
-    return br.donationDate;
-  }
-  method getExpiryDate(br: BloodRecord) returns(expDate: D.Date)
-  {
-    return br.expiryDate;
-  }
-  method hasExpired(br: BloodRecord) returns (b: bool)
-  {
-    var current := D.current();
-    b := D.LessThan(current, br.expiryDate);
-  }
   
 }
