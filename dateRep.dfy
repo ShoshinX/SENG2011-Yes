@@ -10,13 +10,13 @@ module DateRep
 
   predicate validDate(dd: int, mm: int, yyyy: int)
   {
-    (0 <= mm < 12) && (0 <= yyyy < 2019) && (0 <= dd < 31)
+    (0 < mm <= 12) && (0 < yyyy <= 2019) && (0 < dd <= 31)
   }
 
   method isValid(dd: int, mm: int, yyyy: int) returns (b:bool)
   ensures b <==> validDate(dd, mm, yyyy)
   {
-    b := ( (0 <= mm < 12) && (0 <= yyyy < 2019) && (0 <= dd < 31));
+    b := ( (0 < mm <= 12) && (0 < yyyy <= 2019) && (0 < dd <= 31));
   }
 
   method create(dd: int, mm: int, yyyy: int) returns(date: Date)
@@ -24,6 +24,9 @@ module DateRep
   requires 0 < dd <= 31
   requires 0 < mm <= 12
   requires 0 < yyyy <= 2019
+  ensures date.day == dd as Day
+  ensures date.month == mm as Month
+  ensures date.year == yyyy as Year
   {
     assert validDate(dd, mm, yyyy);
     var d := dd as Day;
@@ -36,18 +39,8 @@ module DateRep
 
   // Get current date
   // idk how to implement 
-  method current() returns (d: Date)
-  {
-    var day := 1;
-    var m := 10;
-    var y := 2018;
-    assert (0 <= day < 31);
-    assert (0 <= m < 12);
-    assert (0 <= y < 2019);
-    assert validDate(day,m,y);
-    
-    d := create(day,m,y); 
-  }
+  static var current := create(1,10,2019); 
+
 
   // d1 is before d2
   method lessThan(d1:Date, d2:Date) returns (b: bool)
