@@ -1,7 +1,7 @@
 module BloodRep {
   import D = DateRep
   datatype BloodType = A | B | AB | O // A = 0, B = 1, AB = 2, O = 3
-  datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
+  datatype BloodRecord = BloodRecord(bType: BloodType, location: int, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
 
   predicate typeValid(req: BloodType, ret: BloodType)
   {
@@ -20,15 +20,19 @@ module BloodRep {
     if(bType == 3) {return O;}
   }
   
-  method createBr(bt: BloodType, l: string, day1:int,month1:int,yr1:int, day2:int,month2:int,yr2:int, isOkay: bool) returns (br: BloodRecord)
+  method createBr(bt: BloodType, l: int, day1:int,month1:int,yr1:int, day2:int,month2:int,yr2:int, isOkay: bool) returns (br: BloodRecord)
   {
     var d1: D.Date, d2: D.Date;
     d1 := D.create(day1,month1,yr1);
     d2 := D.create(day2,month2,yr2);
+    /*
+    var b;
+    b := D.LessThan(d1, d2);
+    assert b;*/
     return BloodRecord(bt, l, d1, d2, isOkay);
   }
   
-  method getBTasstring(bt: BloodType) returns(s: string)
+  method getBTasString(bt: BloodType) returns(s: string)
   {
     match bt
     case A => return "A";
@@ -36,11 +40,19 @@ module BloodRep {
     case AB => return "AB";
     case O => return "O";
   }
+  method getBTasInt(bt: BloodType) returns(i: int)
+  {
+    match bt
+    case A => return 1;
+    case B => return 2;
+    case AB => return 3;
+    case O => return 4;
+  }
   method getBloodType(br: BloodRecord) returns(bt: BloodType)
   {
     return br.bType;
   }
-  method getLocation(br: BloodRecord) returns(location: string) 
+  method getLocation(br: BloodRecord) returns(location: int) 
   {
     return br.location;
   }
