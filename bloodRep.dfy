@@ -1,3 +1,4 @@
+
 module BloodRep {
   import D = DateRep
   datatype BloodType = A | B | AB | O // A = 0, B = 1, AB = 2, O = 3
@@ -23,28 +24,22 @@ module BloodRep {
   // Create a blood record
   // TODO make a date addition to automatically set expiry date rather than pass through
   method createBr(bt: BloodType, l: string, dd1:int,mm1:int,yy1:int, dd2:int,mm2:int,yy2:int, isOkay: bool) returns (br: BloodRecord)
-  //requires validDate(dd, mm, yy)
-  requires 0 < dd1 <= 31
-  requires 0 < mm1 <= 12
-  requires 0 < yy1 <= 2019
-  requires 0 < dd2 <= 31
-  requires 0 < mm2 <= 12
-  requires 0 < yy2 <= 2019
+  requires D.validDate(dd1, mm1, yy1)
+  requires D.validDate(dd2, mm2, yy2)
+  ensures br.bType == bt
+  ensures br.location == l
+  ensures br.donationDate.day == dd1
+  ensures br.donationDate.month== mm1
+  ensures br.donationDate.year == yy1
+  ensures br.expiryDate.day == dd2
+  ensures br.expiryDate.month== mm2
+  ensures br.expiryDate.year == yy2
+  ensures br.isOkay == isOkay
   {
-    var d1: D.Date, d2: D.Date;
-    assert (0 < dd1 <= 31);
-    assert (0 < mm1 <= 12);
-    assert (0 < yy1 <= 2019);
-
-    assert (0 < dd2 <= 31);
-    assert (0 < mm2 <= 12);
-    assert (0 < yy2 <= 2019);
-
-    d1 := D.create(dd1,mm1,yy1);
-    d2 := D.create(dd2,mm2,yy2);
-    return BloodRecord(bt, l, d1, d2, isOkay);
+    var d1 := D.create(dd1,mm1,yy1);
+    var d2 := D.create(dd2,mm2,yy2);
+    br := BloodRecord(bt, l, d1, d2, isOkay);
   }
-
 
   method hasExpired(b1: BloodRecord) returns (b: bool)
   
@@ -57,12 +52,12 @@ module BloodRep {
   }
 
   method compare(b1: BloodRecord, b2: BloodRecord) returns (cmp: int)
-  ensures (cmp == -1) ==> (b1.expiryDate.year < b2.expiryDate.year) 
+  ensures (cmp == -1) <==> (b1.expiryDate.year < b2.expiryDate.year) 
                        || (b1.expiryDate.year == b2.expiryDate.year && b1.expiryDate.month < b2.expiryDate.month) 
                        || (b1.expiryDate.year == b2.expiryDate.year && b1.expiryDate.month == b2.expiryDate.month && b1.expiryDate.day < b2.expiryDate.day)  
-  ensures (cmp == 0) ==> (b1.expiryDate.year == b2.expiryDate.year && b1.expiryDate.month == b2.expiryDate.month && b1.expiryDate.day == b2.expiryDate.day)
+  ensures (cmp == 0) <==> (b1.expiryDate.year == b2.expiryDate.year && b1.expiryDate.month == b2.expiryDate.month && b1.expiryDate.day == b2.expiryDate.day)
 
-  ensures (cmp == 1) ==> (b2.expiryDate.year < b1.expiryDate.year) 
+  ensures (cmp == 1) <==> (b2.expiryDate.year < b1.expiryDate.year) 
                        || (b2.expiryDate.year == b1.expiryDate.year && b2.expiryDate.month < b1.expiryDate.month) 
                        || (b2.expiryDate.year == b1.expiryDate.year && b2.expiryDate.month == b1.expiryDate.month && b2.expiryDate.day < b1.expiryDate.day)
   {
@@ -83,19 +78,16 @@ module BloodRep {
     
     var br1 := createBr(typeA, "Backyard", 4, 2, 2003, 12, 4, 2007, true);
     var br2 := createBr(typeA, "Backyard", 1, 2, 2013, 11, 5, 2015, true);
-    var br3 := createBr(typeA, "Backyard", 17, 5, 2014, 1, 7, 2016, true);
 
     var test1 := hasExpired(br1);
     var test2 := compare(br1, br1);
     var test3 := compare(br1, br2);
     var test4 := compare(br2, br1);
 
-    assert(test1);
-    assert(!test1);
-    
+    assert(test1);    
     assert(test2 == 0); 
-    assert(test3 == -1);
     assert(test4 == 1);
+    assert(test3 == -1);
   }
     
   method getBTasString(bt: BloodType) returns(s: string)

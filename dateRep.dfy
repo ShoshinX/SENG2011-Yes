@@ -24,6 +24,9 @@ module DateRep
   requires 0 < dd <= 31
   requires 0 < mm <= 12
   requires 0 < yyyy <= 2019
+  ensures date.day == dd
+  ensures date.month == mm
+  ensures date.year == yyyy
   {
     assert validDate(dd, mm, yyyy);
     var d := dd as Day;
