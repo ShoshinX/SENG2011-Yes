@@ -1,5 +1,6 @@
 import B = BloodRep
 datatype BloodType = A | B | AB | O // A = 0, B = 1, AB = 2, O = 3
+datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
 
 method matchingBlood(patientBloodType: BloodType, a:array<BloodRecord>) returns (compatibleBlood: bool)
     ensures patientBloodType == O && !doesExist(O, a) ==> compatibleBlood == false
