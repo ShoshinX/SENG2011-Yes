@@ -21,7 +21,6 @@ function initApp() {
         case 'donor':
             //TODO
             break;
-        case null:
         default:
             setupLoginPage();
             break;

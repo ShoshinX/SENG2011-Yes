@@ -74,3 +74,17 @@ html {
     outline: 0;
     text-decoration: none;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+tr:hover {
+    background-color: lightblue;
+}
