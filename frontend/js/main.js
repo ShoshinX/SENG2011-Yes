@@ -1,5 +1,6 @@
 import { setupLoginPage } from "./loginPage.js";
 import { setupVampirePage } from "./VampirePage.js";
+import { setupHospitalPage } from "./HospitalPage.js";
 
 function initApp() {
     let token = localStorage.getItem("token");
@@ -17,6 +18,7 @@ function initApp() {
             break;
         case 'hospital':
             //TODO
+            setupHospitalPage();
             break;
         case 'donor':
             //TODO

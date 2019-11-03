@@ -5,7 +5,8 @@ function setupVampirePage() {
     // insertion of blood top right
     // view of blood bottom right
     // in one page
-    // log of system in another tab
+    // Vampire user doesn't have to deal with logs, only with notifications from system
+    // server administrator does the logs 
     let content_div = document.getElementById("Content");
     let vampireContent_div = document.createElement("div");
     vampireContent_div.style.display = "grid";
@@ -73,7 +74,7 @@ function bloodInsert_form() {
     let submit_input = document.createElement("input");
     submit_input.type = "submit";
     submit_input.value = "insert";
-    submit_input.addEventListener("submit", e => {
+    input_div.addEventListener("submit", e => {
         e.preventDefault();
         // TODO submit action add here
     })

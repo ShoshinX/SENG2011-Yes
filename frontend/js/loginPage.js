@@ -34,7 +34,8 @@ function setupLoginPage() {
     loginForm_form.addEventListener("submit", e => {
         e.preventDefault();
         //TODO implement token for identification of specific user
-        localStorage.setItem("userType", "vampire");
+        // to change type of user, use code below
+        localStorage.setItem("userType", "hospital");
         initApp();
     });
     login_div.appendChild(loginForm_form);
