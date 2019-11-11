@@ -1,4 +1,4 @@
-
+include "dateRep.dfy"
 module BloodRep {
   import D = DateRep
   datatype BloodType = A | B | AB | O // A = 0, B = 1, AB = 2, O = 3
@@ -108,23 +108,4 @@ module BloodRep {
     case O => return 4;
   }
 
-  method getBloodType(br: BloodRecord) returns(bt: BloodType)
-  {
-    return br.bType;
-  }
-
-  method getLocation(br: BloodRecord) returns(location: string) 
-  {
-    return br.location;
-  }
-
-  method getProductionDate(br: BloodRecord) returns(proDate: D.Date)
-  {
-    return br.donationDate;
-  }
-
-  method getExpiryDate(br: BloodRecord) returns(expDate: D.Date)
-  {
-    return br.expiryDate;
-  } 
 }

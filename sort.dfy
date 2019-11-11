@@ -1,8 +1,13 @@
+include "bloodRep.dfy"
 /*
-method SortByBloodType(a: array<br.BloodRecord>) returns(a: array<br.BloodRecord)
-requires a != null
+predicate sortedByBloodType(s: seq<br.BloodRecord>)
 {
+  //forall j, k :: 0 <= j < k < |s| ==> s[j].bType <= s[k].bType
+}
 
+predicate sortedByLocation(s: seq<br.BloodRecord>)
+{
+  forall j, k :: 0 <= j < k < |s| ==> s[j].location < s[k].location
 }
 
 method SortByExpDate(a: array<br.BloodRecord>) returns(a: array<br.BloodRecord)
@@ -18,6 +23,8 @@ requires a != null
 // 3 for production date
 // 4 for expiry date
 method mergeSort(s: seq<br.BloodRecord>, sortBy: int) returns(sortedS: seq<br.BloodRecord>)
+//ensures sortBy == 1 ==> sortedByBloodType(s)
+//ensures sortBy == 2 ==> sortedByLocation(s)
 {
   // base cases for single item and two items
   // single item just return
@@ -28,16 +35,23 @@ method mergeSort(s: seq<br.BloodRecord>, sortBy: int) returns(sortedS: seq<br.Bl
     var left, right;
     if(sortBy == 1)
     {
-      var bt1, bt2;
-      bt1 := br.getBloodType(s[0]);
-      bt2 := br.getBloodType(s[1]);
-      left := br.getBTasInt(bt1);
-      right := br.getBTasInt(bt2);
+      left := br.getBTasInt(s[0].bType);
+      right := br.getBTasInt(s[1].bType);
     }
     if(sortBy == 2)
     {
-      left := br.getLocation(s[0]);
-      right := br.getLocation(s[1]);
+      left := s[0].location;
+      right := s[1].location;
+    }
+    if(sortBy == 3)
+    {
+      left := 0;
+      right := 1;
+    }
+    if(sortBy == 4)
+    {
+      left := 0;
+      right := 1;
     }
     if(left < right) 
     {
@@ -68,10 +82,11 @@ method mergeSort(s: seq<br.BloodRecord>, sortBy: int) returns(sortedS: seq<br.Bl
     rseq := mergeSort(botcp, sortBy);
     
     // merging the sorted half sequences
-    var i, j, k;
-    i, j, k := 0, 0, 0;
-    while i < |lseq| + |rseq|
-    invariant 0 <= i <= |lseq| + |rseq|
+    var j, k;
+    j, k := 0, 0;
+    while j < |lseq| || k < |rseq|
+    decreases (|lseq| + |rseq|) - (j + k)
+    invariant 0 <= j <= |lseq| || 0 <= k <= |rseq|
     {
       // reach the end of one sequence so the rest of the other
       // sequence can be appended onto the end of the sorted sequence
@@ -93,16 +108,23 @@ method mergeSort(s: seq<br.BloodRecord>, sortBy: int) returns(sortedS: seq<br.Bl
         var litem, ritem;
         if(sortBy == 1)
         {
-          var bt1, bt2;
-          bt1 := br.getBloodType(lseq[j]);
-          bt2 := br.getBloodType(rseq[k]);
-          litem := br.getBTasInt(bt1);
-          ritem := br.getBTasInt(bt2);
+          litem := br.getBTasInt(lseq[j].bType);
+          ritem := br.getBTasInt(rseq[k].bType);
         }
         if(sortBy == 2)
         {
-          litem := br.getLocation(lseq[j]);
-          ritem := br.getLocation(rseq[k]);
+          litem := lseq[j].location;
+          ritem := rseq[k].location;
+        }
+        if(sortBy == 3)
+        {
+          litem := 0;
+          ritem := 1;
+        }
+        if(sortBy == 4)
+        {
+          litem := 0;
+          ritem := 1;
         }
         if(litem <= ritem) 
         {
@@ -115,7 +137,6 @@ method mergeSort(s: seq<br.BloodRecord>, sortBy: int) returns(sortedS: seq<br.Bl
           k := k + 1;
         }
       }
-      i := i + 1;
     }
   }
 }
@@ -131,11 +152,11 @@ method Main() {
   var bt3 := br.createBt(2);
   var bt4 := br.createBt(3);
   
-  b1 := br.createBr(bt2, 1, 11, 11, 2011, 12, 12, 2012, true);
-  b2 := br.createBr(bt1, 3, 10, 10, 2017, 11, 11, 2017, true);
-  b3 := br.createBr(bt4, 6, 16, 10, 2015, 25, 3, 2016, true);
-  b4 := br.createBr(bt3, 1, 10, 3, 2010, 18, 5, 2011, true);
-  b5 := br.createBr(bt1, 2, 10, 2, 2014, 21, 10, 2014, true);
+  b1 := br.createBr(bt2, "H1", 11, 11, 2011, 12, 12, 2012, true);
+  b2 := br.createBr(bt1, "P3", 10, 10, 2017, 11, 11, 2017, true);
+  b3 := br.createBr(bt4, "P6", 16, 10, 2015, 25, 3, 2016, true);
+  b4 := br.createBr(bt3, "P1", 10, 3, 2010, 18, 5, 2011, true);
+  b5 := br.createBr(bt1, "H2", 10, 2, 2014, 21, 10, 2014, true);
   
   var s: seq<br.BloodRecord> := [b1, b2, b3, b4, b5];
 
@@ -145,7 +166,7 @@ method Main() {
   
   print '\n';
   
-  var s2 := mergeSort(s, 1);
+  var s2 := mergeSort(s, 2);
   
   printer(s2);
 }
@@ -154,12 +175,11 @@ method printer(s: seq<br.BloodRecord>)
 {
   var i := 0;
   while i < |s| {
-    var bt, sbt, l, pro, exp;
-    bt := br.getBloodType(s[i]);
-    sbt := br.getBTasString(bt);
-    l := br.getLocation(s[i]);
-    pro := br.getProductionDate(s[i]);
-    exp := br.getExpiryDate(s[i]);
+    var sbt, l, pro, exp;
+    sbt := br.getBTasString(s[i].bType);
+    l := s[i].location;
+    pro := s[i].donationDate;
+    exp := s[i].expiryDate;
     print sbt, ' ', l, ' ', pro, ' ', exp, '\n';
     i := i + 1;
   }
