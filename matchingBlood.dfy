@@ -7,45 +7,50 @@ datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationD
 
 method matchingBlood(patientBloodType: BloodType, a:array<BloodRecord>) returns (compatibleBlood: bool)
     requires a != null && a.Length > 0
-    ensures compatibleBlood == compatibleBloodExists(patientBloodType, a)
+    ensures compatibleBlood == true ==> compatibleBloodExists(patientBloodType, a)
+    ensures compatibleBlood == false ==> !compatibleBloodExists(patientBloodType, a)
 {
     var validO := doesExist(O, a);
     var validA := doesExist(A, a);
     var validAB := doesExist(AB, a);
     var validB := doesExist(B, a);
+    
+    // Check Type O Compatibility 
     if (patientBloodType == O && !validO)
     {
             compatibleBlood := false;
     }
-    if (patientBloodType == O && validO)
+    else
     {
         compatibleBlood := true;
     }
-    if (patientBloodType == A && validA)
-    {
-        compatibleBlood := true;
-    }
-    if (patientBloodType == A && !validA && validO)
-    {
-        compatibleBlood := true;
-    }
+
+    // Check Type A Compatibility
     if (patientBloodType == A && !validA && !validO)
     {
         compatibleBlood := false;
     }
-    if (patientBloodType == B && validB)
+    else
     {
         compatibleBlood := true;
     }
-    if (patientBloodType == B && !validB && validO)
-    {
-        compatibleBlood := true;
-    }
+    
+    // Check type B Compatibility
     if (patientBloodType == B && !validB && !validO)
     {
         compatibleBlood := false;
     }
-    if (patientBloodType == AB && validAB)
+    else
+    {
+        compatibleBlood := true;
+    }
+
+    // Check AB Compatibility
+    if (patientBloodType == AB && !validAB && !validA && !validB && !validO)
+    {
+        compatibleBlood := false;
+    }
+    else
     {
         compatibleBlood := true;
     }
