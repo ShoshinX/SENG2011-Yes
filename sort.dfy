@@ -1,3 +1,4 @@
+include "bloodRep.dfy"
 /*
 predicate sortedByBloodType(s: seq<br.BloodRecord>)
 {
