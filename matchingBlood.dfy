@@ -7,65 +7,51 @@ datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationD
 
 method matchingBlood(patientBloodType: BloodType, a:array<BloodRecord>) returns (compatibleBlood: bool)
     requires a != null && a.Length > 0
-    ensures compatibleBlood == true ==> compatibleBloodExists(patientBloodType, a)
-    ensures compatibleBlood == false ==> !compatibleBloodExists(patientBloodType, a)
+    ensures compatibleBlood == compatibleBloodExists(patientBloodType, a)
 {
-    var validO := doesExist(O, a);
-    var validA := doesExist(A, a);
-    var validAB := doesExist(AB, a);
-    var validB := doesExist(B, a);
-    
-    // Check Type O Compatibility 
-    if (patientBloodType == O && !validO)
+    // Check Type O Compatibility
+    if (patientBloodType == O)
     {
-            compatibleBlood := false;
-    }
-    else
-    {
-        compatibleBlood := true;
+        compatibleBlood := doesExist(O, a);
     }
 
     // Check Type A Compatibility
-    if (patientBloodType == A && !validA && !validO)
+    else if (patientBloodType == A)
     {
-        compatibleBlood := false;
+        var existsA := doesExist(A, a);
+        var existsO := doesExist(O, a);
+        compatibleBlood := (existsA || existsO);
     }
-    else
-    {
-        compatibleBlood := true;
-    }
-    
+
     // Check type B Compatibility
-    if (patientBloodType == B && !validB && !validO)
+    else if (patientBloodType == B)
     {
-        compatibleBlood := false;
-    }
-    else
-    {
-        compatibleBlood := true;
+        var existsB := doesExist(B, a);
+        var existsO := doesExist(O, a);
+        compatibleBlood := (existsB || existsO);
     }
 
     // Check AB Compatibility
-    if (patientBloodType == AB && !validAB && !validA && !validB && !validO)
+    else if (patientBloodType == AB)
     {
-        compatibleBlood := false;
-    }
-    else
-    {
-        compatibleBlood := true;
+        var existsA := doesExist(A, a);
+        var existsB := doesExist(B, a);
+        var existsAB := doesExist(AB, a);
+        var existsO := doesExist(O, a);
+        compatibleBlood := (existsA || existsB || existsAB || existsO);
     }
 }
 
 method doesExist(bType: BloodType, a:array<BloodRecord>) returns (Exists: bool)
     requires a != null
-    ensures Exists == true ==> exists k :: 0 <= k < a.Length && a[k].bType == bType
+    ensures Exists == exists k :: 0 <= k < a.Length && a[k].bType == bType
 {
     var i := 0;
     Exists := false;
     while (i < a.Length)
         decreases a.Length - i
         invariant 0 <= i <= a.Length
-        invariant Exists == true ==> exists k :: 0 <= k < i && a[k].bType == bType 
+        invariant Exists == exists k :: 0 <= k < i && a[k].bType == bType
     {
         if (a[i].bType == bType)
         {
@@ -85,7 +71,7 @@ method doesExist(bType: BloodType, a:array<BloodRecord>) returns (Exists: bool)
 predicate compatibleBloodExists(bType: BloodType, a:array<BloodRecord>)
     reads a
 { match(bType)
-    { 
+    {
         case O => exists i :: 0 <= i < a.Length && a[i].bType == O
         case A => exists i :: 0 <= i < a.Length && (a[i].bType == O || a[i].bType == A)
         case B => exists i :: 0 <= i < a.Length && (a[i].bType == O || a[i].bType == B)
