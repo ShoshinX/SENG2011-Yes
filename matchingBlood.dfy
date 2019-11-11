@@ -7,23 +7,7 @@ datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationD
 
 method matchingBlood(patientBloodType: BloodType, a:array<BloodRecord>) returns (compatibleBlood: bool)
     requires a != null && a.Length > 0
-    ensures patientBloodType == O && !doesExistPredicate(O, a) ==> compatibleBlood == false
-    ensures patientBloodType == O && doesExistPredicate(O, a) ==> compatibleBlood == true
-    ensures patientBloodType == A && doesExistPredicate(A, a) ==> compatibleBlood == true
-    ensures patientBloodType == A && !doesExistPredicate(A, a) && doesExistPredicate(O, a) ==> compatibleBlood == true
-    ensures patientBloodType == A && !doesExistPredicate(A, a) && !doesExistPredicate(O, a) ==> compatibleBlood == false
-    ensures patientBloodType == B && doesExistPredicate(B, a) ==> compatibleBlood == true
-    ensures patientBloodType == B && !doesExistPredicate(B, a) && doesExistPredicate(O, a) ==> compatibleBlood == true
-    ensures patientBloodType == B && !doesExistPredicate(B, a) && !doesExistPredicate(O, a) ==> compatibleBlood == false
-    ensures patientBloodType == AB && doesExistPredicate(AB, a) ==> compatibleBlood == true
-    ensures patientBloodType == AB && !doesExistPredicate(AB, a) && 
-        doesExistPredicate(A, a) ==> compatibleBlood == true
-    ensures patientBloodType == AB && !doesExistPredicate(AB, a) && 
-        !doesExistPredicate(A, a) && doesExistPredicate(B, a) ==> compatibleBlood == true
-    ensures patientBloodType == AB && !doesExistPredicate(AB, a) && 
-        !doesExistPredicate(A, a) && !doesExistPredicate(B, a) && doesExistPredicate(O, a) ==> compatibleBlood == true
-    ensures patientBloodType == AB && !doesExistPredicate(AB, a) && 
-        !doesExistPredicate(A, a) && !doesExistPredicate(B, a) && !doesExistPredicate(O, a) ==> compatibleBlood == false
+    ensures compatibleBlood == compatibleBloodExists(patientBloodType, a)
 {
     var validO := doesExist(O, a);
     var validA := doesExist(A, a);
@@ -87,8 +71,19 @@ method doesExist(bType: BloodType, a:array<BloodRecord>) returns (Exists: bool)
     }
 }
 
-predicate doesExistPredicate(bType: BloodType, a:array<BloodRecord>)
+// predicate doesExistPredicate(bType: BloodType, a:array<BloodRecord>)
+//     reads a
+// {
+//     exists k :: 0 <= k < a.Length && a[k].bType == bType
+// }
+
+predicate compatibleBloodExists(bType: BloodType, a:array<BloodRecord>)
     reads a
-{
-    exists k :: 0 <= k < a.Length && a[k].bType == bType
+{ match(bType)
+    { 
+        case O => exists i :: 0 <= i < a.Length && a[i].bType == O
+        case A => exists i :: 0 <= i < a.Length && (a[i].bType == O || a[i].bType == A)
+        case B => exists i :: 0 <= i < a.Length && (a[i].bType == O || a[i].bType == B)
+        case AB => exists i :: 0 <= i < a.Length && (a[i].bType == O || a[i].bType == A || a[i].bType == B || a[i].bType == AB)
+    }
 }
