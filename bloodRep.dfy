@@ -40,15 +40,19 @@ module BloodRep {
     var d2 := D.create(dd2,mm2,yy2);
     br := BloodRecord(bt, l, d1, d2, isOkay);
   }
-
+ 
+  // Current date is set as 22 Nov 2019
   method hasExpired(b1: BloodRecord) returns (b: bool)
-  
+  ensures !b <==> (2019 < b1.expiryDate.year) 
+              || (2019 == b1.expiryDate.year && 11 < b1.expiryDate.month) 
+              || (2019 == b1.expiryDate.year && 11 == b1.expiryDate.month && 22 < b1.expiryDate.day) 
   {
-    var cur := D.current();
-    var isGood := D.lessThan(cur, b1.expiryDate);
-    b := !isGood;
-    // This is stupid 
-    // Pls fix if you know how to do it :c
+    var d1 := b1.expiryDate;
+    var current := D.create(22, 11, 2019);
+    // Tests whether it has not expired
+    b := D.lessThan(current, b1.expiryDate);
+    // Get opposite 
+    b := !b;
   }
 
   method compare(b1: BloodRecord, b2: BloodRecord) returns (cmp: int)
