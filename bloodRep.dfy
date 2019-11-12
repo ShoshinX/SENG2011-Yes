@@ -55,15 +55,15 @@ module BloodRep {
     b := !b;
   }
 
-  method compare(b1: BloodRecord, b2: BloodRecord) returns (cmp: int)
-  ensures (cmp == -1) <==> (b1.expiryDate.year < b2.expiryDate.year) 
-                       || (b1.expiryDate.year == b2.expiryDate.year && b1.expiryDate.month < b2.expiryDate.month) 
-                       || (b1.expiryDate.year == b2.expiryDate.year && b1.expiryDate.month == b2.expiryDate.month && b1.expiryDate.day < b2.expiryDate.day)  
-  ensures (cmp == 0) <==> (b1.expiryDate.year == b2.expiryDate.year && b1.expiryDate.month == b2.expiryDate.month && b1.expiryDate.day == b2.expiryDate.day)
 
-  ensures (cmp == 1) <==> (b2.expiryDate.year < b1.expiryDate.year) 
-                       || (b2.expiryDate.year == b1.expiryDate.year && b2.expiryDate.month < b1.expiryDate.month) 
-                       || (b2.expiryDate.year == b1.expiryDate.year && b2.expiryDate.month == b1.expiryDate.month && b2.expiryDate.day < b1.expiryDate.day)
+  predicate pExpireBefore(b1: BloodRecord, b2: BloodRecord) 
+  {
+    D.pLessThan(b1.expiryDate, b2.expiryDate)
+  }
+  method compare(b1: BloodRecord, b2: BloodRecord) returns (cmp: int)
+  ensures (cmp == -1) <==> pExpireBefore(b1, b2)
+  ensures (cmp == 0) <==> (!pExpireBefore(b1, b2) && !pExpireBefore(b2,b1))
+  ensures (cmp == 1) <==> pExpireBefore(b2, b1)
   {
     var a := D.lessThan(b1.expiryDate, b2.expiryDate);
     var b := D.lessThan(b2.expiryDate, b1.expiryDate);
