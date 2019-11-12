@@ -37,12 +37,15 @@ module DateRep
   
   datatype Date = Date(day: int, month: int, year: int)
 
+  predicate pLessThan(d1: Date, d2: Date) {
+    (d1.year < d2.year) 
+              || (d1.year == d2.year && d1.month < d2.month) 
+              || (d1.year == d2.year && d1.month == d2.month && d1.day < d2.day) 
+  }
   
   // d1 is before d2
   method lessThan(d1:Date, d2:Date) returns (b: bool)
-  ensures b <==> (d1.year < d2.year) 
-              || (d1.year == d2.year && d1.month < d2.month) 
-              || (d1.year == d2.year && d1.month == d2.month && d1.day < d2.day) 
+  ensures b <==> pLessThan(d1, d2)
   {
     // Compare days
     b := d2.day > d1.day;
