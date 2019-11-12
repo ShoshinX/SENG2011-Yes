@@ -9,7 +9,7 @@ datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationD
 method GetCompatibleBlood(patientBloodType: BloodType, a:array<BloodRecord>) returns (compatibleBlood: BloodRecord)
     requires a != null && a.Length > 0
     requires compatibleBloodExists(patientBloodType, a)
-    ensures isCompatible(patientBloodType, compatibleBlood.bType)
+    ensures isCompatible(compatibleBlood.bType, patientBloodType)
 {
     var i := 0;
     while (i < a.Length)
@@ -17,10 +17,13 @@ method GetCompatibleBlood(patientBloodType: BloodType, a:array<BloodRecord>) ret
         invariant 0 <= i <= a.Length
         invariant forall k :: 0 <= k < i ==> !isCompatible(patientBloodType, a[k].bType)
     {
-        var comp := AreCompatible(patientBloodType, a[i].bType);
-        if (comp)
+        if ((patientBloodType == O && a[i].bType == O) ||
+        (patientBloodType == A && (a[i].bType == O || a[i].bType == A)) ||
+        (patientBloodType == B && (a[i].bType == O || a[i].bType == B)) ||
+        (patientBloodType == AB && (a[i].bType == O || a[i].bType == A || a[i].bType == B || a[i].bType == AB)))
         {
             compatibleBlood := a[i];
+            return;
         }
         i := i + 1;
     }
@@ -81,15 +84,6 @@ method DoesExist(bType: BloodType, a:array<BloodRecord>) returns (Exists: bool)
 
         i := i + 1;
     }
-}
-
-method AreCompatible(patientBloodType: BloodType, donorBloodType: BloodType) returns (areCompatible: bool)
-    ensures isCompatible(patientBloodType, donorBloodType)
-{
-    areCompatible := (patientBloodType == O && donorBloodType == O) ||
-        (patientBloodType == A && (donorBloodType == O || donorBloodType == A)) ||
-        (patientBloodType == B && (donorBloodType == O || donorBloodType == B)) ||
-        (patientBloodType == AB && (donorBloodType == O || donorBloodType == A || donorBloodType == B || donorBloodType == AB));
 }
 
 predicate compatibleBloodExists(bType: BloodType, a:array<BloodRecord>)
