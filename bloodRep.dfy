@@ -91,9 +91,9 @@ module BloodRep {
           || (2019 == expiryDate.year && 11 == expiryDate.month && 22 < expiryDate.day) 
     }
  
-    method notValid()
+    method checkAndMark()
     modifies this
-    ensures !placeholderPredicate() ==> !isOkay
+    ensures !pNotExpired() ==> !isOkay
     {
       var expire := hasExpired();
       if (expire) { 
@@ -127,26 +127,6 @@ module BloodRep {
 
     }
 
-    /*
-    method compare(b2: BloodRecord) returns (cmp: int)
-    requires b2 != null
-    ensures (cmp == -1) <==> (expiryDate.year < b2.expiryDate.year) 
-                          || (expiryDate.year == b2.expiryDate.year && expiryDate.month < b2.expiryDate.month) 
-                          || (expiryDate.year == b2.expiryDate.year && expiryDate.month == b2.expiryDate.month && expiryDate.day < b2.expiryDate.day)  
-    ensures (cmp == 0) <==> (expiryDate.year == b2.expiryDate.year && expiryDate.month == b2.expiryDate.month && expiryDate.day == b2.expiryDate.day)
-
-    ensures (cmp == 1) <==> (b2.expiryDate.year < expiryDate.year) 
-                         || (b2.expiryDate.year == expiryDate.year && b2.expiryDate.month < expiryDate.month) 
-                         || (b2.expiryDate.year == expiryDate.year && b2.expiryDate.month == expiryDate.month && b2.expiryDate.day < expiryDate.day)
-    {
-      var a := D.lessThan(expiryDate, b2.expiryDate);
-      var b := D.lessThan(b2.expiryDate, expiryDate);
-      assert( a ==> !b && b ==> !a);
-      if (a) { return -1; } 
-      else if (b) { return 1; }
-      else { return 0; }
-    }
-*/
   }
 
   
@@ -160,8 +140,6 @@ module BloodRep {
     var typeAB := createBt(2);
     var typeO := createBt(3);
     
-    //var br1 := createBr(typeA, "Backyard", 4, 2, 2003, 12, 4, 2007, true);
-    //var br2 := createBr(typeA, "Backyard", 1, 2, 2013, 11, 5, 2015, true);
     var br1 := new BloodRecord(typeA, "Backyard", 4, 2, 2003, 12, 4, 2007, true);
     var br2 := new BloodRecord(typeA, "Backyard", 1, 2, 2013, 11, 5, 2015, true);
 
@@ -211,6 +189,26 @@ module BloodRep {
  
   */
 
+    /*
+    method compare(b2: BloodRecord) returns (cmp: int)
+    requires b2 != null
+    ensures (cmp == -1) <==> (expiryDate.year < b2.expiryDate.year) 
+                          || (expiryDate.year == b2.expiryDate.year && expiryDate.month < b2.expiryDate.month) 
+                          || (expiryDate.year == b2.expiryDate.year && expiryDate.month == b2.expiryDate.month && expiryDate.day < b2.expiryDate.day)  
+    ensures (cmp == 0) <==> (expiryDate.year == b2.expiryDate.year && expiryDate.month == b2.expiryDate.month && expiryDate.day == b2.expiryDate.day)
+
+    ensures (cmp == 1) <==> (b2.expiryDate.year < expiryDate.year) 
+                         || (b2.expiryDate.year == expiryDate.year && b2.expiryDate.month < expiryDate.month) 
+                         || (b2.expiryDate.year == expiryDate.year && b2.expiryDate.month == expiryDate.month && b2.expiryDate.day < expiryDate.day)
+    {
+      var a := D.lessThan(expiryDate, b2.expiryDate);
+      var b := D.lessThan(b2.expiryDate, expiryDate);
+      assert( a ==> !b && b ==> !a);
+      if (a) { return -1; } 
+      else if (b) { return 1; }
+      else { return 0; }
+    }
+*/
 
 /*
    (  )   /\   _                 (     
