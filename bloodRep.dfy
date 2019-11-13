@@ -49,19 +49,20 @@ module BloodRep {
     }
 
     constructor(bt: BloodType, l: string, dd1: int,mm1:int,yy1:int, dd2:int,mm2:int,yy2:int, ok: bool)
-    modifies this;
-    requires D.validDate(dd1, mm1, yy1)
-    requires D.validDate(dd2, mm2, yy2)
-    ensures Valid();
-    ensures bType == bt;
-    ensures location == l;
-    ensures donationDate.day == dd1;
-    ensures donationDate.month== mm1;
-    ensures donationDate.year == yy1;
-    ensures expiryDate.day == dd2;
-    ensures expiryDate.month== mm2;
-    ensures expiryDate.year == yy2;
-    ensures isOkay == ok;
+      modifies this;
+      requires D.validDate(dd1, mm1, yy1)
+      requires D.validDate(dd2, mm2, yy2)
+      ensures Valid();
+      // Not sure if needed
+      ensures bType == bt;
+      ensures location == l;
+      ensures donationDate.day == dd1;
+      ensures donationDate.month== mm1;
+      ensures donationDate.year == yy1;
+      ensures expiryDate.day == dd2;
+      ensures expiryDate.month== mm2;
+      ensures expiryDate.year == yy2;
+      ensures isOkay == ok;
     { 
       bType := bt; 
       location := l; 
@@ -129,10 +130,6 @@ module BloodRep {
 
   }
 
-  
-
-
-  
   method Test() 
   {
     var typeA := createBt(0);
@@ -153,77 +150,6 @@ module BloodRep {
     assert(test4 == 1);
     assert(test3 == -1);
   }
-    
 
 }
-
-
-
-// HERE BE DRAGONS
-// AND OTHER RELICS OF THE PAST
-
-
-  //datatype BloodRecord = BloodRecord(bType: BloodType, location: string, donationDate: D.Date, expiryDate: D.Date, isOkay: bool)
-
-
-  /*
-  // Create a blood record
-  // TODO make a date addition to automatically set expiry date rather than pass through
-  method createBr(bt: BloodType, l: string, dd1:int,mm1:int,yy1:int, dd2:int,mm2:int,yy2:int, isOkay: bool) returns (br: BloodRecord)
-  requires D.validDate(dd1, mm1, yy1)
-  requires D.validDate(dd2, mm2, yy2)
-  ensures br.bType == bt
-  ensures br.location == l
-  ensures br.donationDate.day == dd1
-  ensures br.donationDate.month== mm1
-  ensures br.donationDate.year == yy1
-  ensures br.expiryDate.day == dd2
-  ensures br.expiryDate.month== mm2
-  ensures br.expiryDate.year == yy2
-  ensures br.isOkay == isOkay
-  {
-    var d1 := D.create(dd1,mm1,yy1);
-    var d2 := D.create(dd2,mm2,yy2);
-    br := BloodRecord(bt, l, d1, d2, isOkay);
-  }
- 
-  */
-
-    /*
-    method compare(b2: BloodRecord) returns (cmp: int)
-    requires b2 != null
-    ensures (cmp == -1) <==> (expiryDate.year < b2.expiryDate.year) 
-                          || (expiryDate.year == b2.expiryDate.year && expiryDate.month < b2.expiryDate.month) 
-                          || (expiryDate.year == b2.expiryDate.year && expiryDate.month == b2.expiryDate.month && expiryDate.day < b2.expiryDate.day)  
-    ensures (cmp == 0) <==> (expiryDate.year == b2.expiryDate.year && expiryDate.month == b2.expiryDate.month && expiryDate.day == b2.expiryDate.day)
-
-    ensures (cmp == 1) <==> (b2.expiryDate.year < expiryDate.year) 
-                         || (b2.expiryDate.year == expiryDate.year && b2.expiryDate.month < expiryDate.month) 
-                         || (b2.expiryDate.year == expiryDate.year && b2.expiryDate.month == expiryDate.month && b2.expiryDate.day < expiryDate.day)
-    {
-      var a := D.lessThan(expiryDate, b2.expiryDate);
-      var b := D.lessThan(b2.expiryDate, expiryDate);
-      assert( a ==> !b && b ==> !a);
-      if (a) { return -1; } 
-      else if (b) { return 1; }
-      else { return 0; }
-    }
-*/
-
-/*
-   (  )   /\   _                 (     
-    \ |  (  \ ( \.(               )                      _____
-  \  \ \  `  `   ) \             (  ___                 / _   \
- (_`    \+   . x  ( .\            \/   \____-----------/ (o)   \_
-- .-               \+  ;          (  O                           \____
-                          )        \_____________  `              \  /
-(__                +- .( -'.- <. - _  VVVVVVV VV V\                 \/
-(_____            ._._: <_ - <- _  (--  _AAAAAAA__A_/                  |
-  .    /./.+-  . .- /  +--  - .     \______________//_              \_______
-  (__ ' /x  / x _/ (                                  \___'          \     /
- , x / ( '  . / .  /                                      |           \   /
-    /  /  _/ /    +                                      /              \/
-   '  (__/                                             /                  \
-
-*/
 
