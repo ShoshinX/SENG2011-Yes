@@ -26,10 +26,6 @@ ensures |sortedS| == |s|
     
     // merging the sorted half sequences
     sortedS := merge(lseq, rseq);
-    assert sorted(sortedS);
-    assert |sortedS| == |s|;
-    
-    return sortedS;
   }
   else
   {
