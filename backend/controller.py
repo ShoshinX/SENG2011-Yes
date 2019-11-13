@@ -1,5 +1,16 @@
+from BloodBank import BloodBank
+from Notification import Notification
+from Log import Log
+
 class Controller():
     def __init__(self):
-        self.notif = notif
-        self.log = log
-        self.bloodRecord = bloodRecord
+        self.notif = Notification()
+        self.log = Log()
+        self.bloodBank = BloodBank()
+    
+    #TODO
+    #def addBR():
+    #def ViewNotif():
+    #def ViewLog():
+    #def ViewBR():
+    #def ViewBRLevels():
