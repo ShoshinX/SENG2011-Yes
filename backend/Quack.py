@@ -14,10 +14,12 @@ class Quack:
         return self.m == self.n
     
     def Pop(self):
+        # TODO make sure m and n are not equal
         x,self.n = self.buf[self.n-1], self.n - 1
         return x
     
     def Qop(self):
+        # TODO make sure m and n are not equal
         x, self.m = self.buf[self.m], self.m+1
         return x
 
@@ -31,5 +33,6 @@ class Quack:
         self.buf[self.n],self.n = x, self.n + 1
     
     def HeadTail(self):
+        # TODO make sure m and n are not equal
         self.buf[self.m], self.buf[self.n-1] = self.buf[self.n-1], self.buf[self.m]
 
