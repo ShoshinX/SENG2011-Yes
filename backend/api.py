@@ -1,11 +1,12 @@
 from flask import Flask 
 from flask_restful import reqparse, abort, Api, Resource
+from controller import Controller
 
 app = Flask(__name__)
 api = Api(app)
 
 # create logic object here
-# controller = controller()
+controller = Controller();
 
 class ViewLog(Resource):
     def get(self):
