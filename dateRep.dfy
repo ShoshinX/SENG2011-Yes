@@ -14,19 +14,19 @@ module DateRep
   }
 
   method isValid(dd: int, mm: int, yyyy: int) returns (b:bool)
-  ensures b <==> validDate(dd, mm, yyyy)
+    ensures b <==> validDate(dd, mm, yyyy)
   {
     b := ( (0 <= mm < 12) && (0 <= yyyy) && (0 <= dd < 31));
   }
 
   method create(dd: int, mm: int, yyyy: int) returns(date: Date)
-  requires validDate(dd, mm, yyyy)
-  requires 0 <= dd < 31
-  requires 0 <= mm < 12
-  requires 0 <= yyyy 
-  ensures date.day == dd
-  ensures date.month == mm
-  ensures date.year == yyyy
+    requires validDate(dd, mm, yyyy)
+    requires 0 <= dd < 31
+    requires 0 <= mm < 12
+    requires 0 <= yyyy 
+    ensures date.day == dd
+    ensures date.month == mm
+    ensures date.year == yyyy
   {
     assert validDate(dd, mm, yyyy);
     var d := Day(dd) ;
@@ -45,7 +45,7 @@ module DateRep
   
   // d1 is before d2
   method lessThan(d1:Date, d2:Date) returns (b: bool)
-  ensures b <==> pLessThan(d1, d2)
+    ensures b <==> pLessThan(d1, d2)
   {
     // Compare days
     b := d2.day > d1.day;

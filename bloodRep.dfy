@@ -74,7 +74,7 @@ module BloodRep {
     // Current date is set as 22 Nov 2019
     // Expiration as being the same day as expired date or later
     method hasExpired() returns (b: bool)
-    ensures !b <==> pNotExpired() 
+      ensures !b <==> pNotExpired() 
     {
       var d1 := expiryDate;
       var current := D.create(22, 11, 2019);
@@ -85,7 +85,7 @@ module BloodRep {
     }
 
     predicate pNotExpired()
-    reads this
+      reads this
     {
       (2019 < expiryDate.year) 
           || (2019 == expiryDate.year && 11 < expiryDate.month) 
@@ -93,8 +93,8 @@ module BloodRep {
     }
  
     method checkAndMark()
-    modifies this
-    ensures !pNotExpired() ==> !isOkay
+      modifies this
+      ensures !pNotExpired() ==> !isOkay
     {
       var expire := hasExpired();
       if (expire) { 
@@ -103,19 +103,19 @@ module BloodRep {
     }
 
     predicate pExpireBefore(b1: BloodRecord, b2: BloodRecord) 
-    requires b1 != null
-    requires b2 != null
-    reads b1
-    reads b2
+      requires b1 != null
+      requires b2 != null
+      reads b1
+      reads b2
     {
       D.pLessThan(b1.expiryDate, b2.expiryDate)
     }
 
     method compare(b2: BloodRecord) returns (cmp: int)
-    requires b2 != null
-    ensures (cmp == -1) <==> pExpireBefore(this, b2)
-    ensures (cmp == 0) <==> (!pExpireBefore(this, b2) && !pExpireBefore(b2,this))
-    ensures (cmp == 1) <==> pExpireBefore(b2, this)
+      requires b2 != null
+      ensures (cmp == -1) <==> pExpireBefore(this, b2)
+      ensures (cmp == 0) <==> (!pExpireBefore(this, b2) && !pExpireBefore(b2,this))
+      ensures (cmp == 1) <==> pExpireBefore(b2, this)
     {
       var a := D.lessThan(expiryDate, b2.expiryDate);
       var b := D.lessThan(b2.expiryDate, expiryDate);
