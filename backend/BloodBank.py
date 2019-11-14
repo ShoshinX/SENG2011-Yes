@@ -1,6 +1,7 @@
 from Quack import Quack
 from BloodType import BloodType
 import sys
+from BloodRecord import BloodRecord
 
 class BloodBank():
 
@@ -11,7 +12,9 @@ class BloodBank():
         self.O = Quack(1)
     
     def ViewAll(self):
-        return self.A + self.B + self.AB + self.O
+        def BRToJSONString(bloodRecord):
+            return {"BloodType": bloodRecord.bType.name, "location": bloodRecord.location, "donationDate": bloodRecord.donationDate.toString(), "expiryDate": bloodRecord.expiryDate.toString(), "isOkay": bloodRecord.isOkay}
+        return [BRToJSONString(x) for x in self.A.buf[self.A.m:self.A.n] + self.B.buf[self.B.m:self.B.n] + self.AB.buf[self.AB.m:self.AB.n] + self.O.buf[self.O.m:self.O.n]]
     
     def ViewBRLevels(self):
         return [self.A.Length(),self.B.Length(),self.AB.Length(),self.O.Length()]

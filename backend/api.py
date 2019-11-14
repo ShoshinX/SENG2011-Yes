@@ -1,10 +1,13 @@
-from flask import Flask 
+from flask import Flask, request 
 from flask_restful import reqparse, abort, Api, Resource
 from Controller import Controller
+from BloodType import BloodType
+from datetime import date
 
 app = Flask(__name__)
 api = Api(app)
 
+parser = reqparse.RequestParser()
 # create logic object here
 controller = Controller();
 
@@ -13,7 +16,7 @@ class ViewLog(Resource):
         return
 class ViewBR(Resource):
     def get(self):
-        return
+        return {'BloodRecords': controller.ViewBR() }, 200
 class ViewBRLevels(Resource):
     def get(self):
         # [A,B,AB,O]
@@ -23,7 +26,18 @@ class ViewNotif(Resource):
         return
 class AddBR(Resource):
     def post(self):
-        return
+        json_data = request.get_json()
+        # extract data
+        bt = json_data['BloodType']
+        loc = json_data['Location']
+        ProdDate = date.fromisoformat(json_data['ProdDate'])
+        ExpDate = date.fromisoformat(json_data['ExpDate'])
+        isOkay = json_data['IsOkay']
+        # add into blood record
+        controller.addBR(BloodType.FromStrToEnum(bt), loc, 
+            ProdDate.day, ProdDate.month, ProdDate.year,
+            ExpDate.day, ExpDate.month, ExpDate.year, isOkay)
+        return 'successfully added new BloodRecord', 200
 class RequestBR(Resource):
     def get(self):
         return

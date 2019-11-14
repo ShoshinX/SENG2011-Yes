@@ -22,3 +22,6 @@ class Date:
         yearComparator = (p2.year > self.year) or (monthComparator and p2.year == self.year) 
         return yearComparator
     
+    def toString(self):
+        return str(self.year) + "-" + str(self.month) + "-" + str(self.day)
+    
