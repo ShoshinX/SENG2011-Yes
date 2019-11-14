@@ -14,6 +14,10 @@ class ViewLog(Resource):
 class ViewBR(Resource):
     def get(self):
         return
+class ViewBRLevels(Resource):
+    def get(self):
+        # [A,B,AB,O]
+        return {'BloodRecordsLevels':controller.ViewBRLevels()}, 200
 class ViewNotif(Resource):
     def get(self):
         return
@@ -26,6 +30,7 @@ class RequestBR(Resource):
 
 api.add_resource(ViewLog,'/api/viewLog')
 api.add_resource(ViewBR,'/api/viewBR')
+api.add_resource(ViewBRLevels,'/api/viewBRLevels')
 api.add_resource(AddBR,'/api/addBR')
 api.add_resource(RequestBR,'/api/requestBR')
 

@@ -35,4 +35,6 @@ class Quack:
     def HeadTail(self):
         # TODO make sure m and n are not equal
         self.buf[self.m], self.buf[self.n-1] = self.buf[self.n-1], self.buf[self.m]
-
+    
+    def Length(self):
+        return self.n - self.m

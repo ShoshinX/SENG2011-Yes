@@ -1,4 +1,4 @@
-class Log():
+class Logs():
     #TODO
     def __init__(self):
         self.log = []

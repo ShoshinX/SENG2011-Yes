@@ -9,6 +9,12 @@ class BloodBank():
         self.B = Quack(1)
         self.AB = Quack(1)
         self.O = Quack(1)
+    
+    def ViewAll(self):
+        return self.A + self.B + self.AB + self.O
+    
+    def ViewBRLevels(self):
+        return [self.A.Length(),self.B.Length(),self.AB.Length(),self.O.Length()]
 
     def Empty(self, bloodType):
         try:
