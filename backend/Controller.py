@@ -20,3 +20,7 @@ class Controller():
         return self.bloodBank.ViewAll() 
     def ViewBRLevels(self):
         return self.bloodBank.ViewBRLevels()
+    #TODO
+    def RequestBR(self, bloodType):
+        #TODO implement the blood matching algorithm
+        return self.bloodBank.Qop(bloodType)

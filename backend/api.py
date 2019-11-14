@@ -8,6 +8,7 @@ app = Flask(__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
+parser.add_argument('bloodType')
 # create logic object here
 controller = Controller();
 
@@ -39,14 +40,15 @@ class AddBR(Resource):
             ExpDate.day, ExpDate.month, ExpDate.year, isOkay)
         return 'successfully added new BloodRecord', 200
 class RequestBR(Resource):
-    def get(self):
-        return
+    def get(self,bloodType):
+        args = parser.parse_args()
+        return controller.RequestBR(BloodType.FromStrToEnum(bloodType))
 
 api.add_resource(ViewLog,'/api/viewLog')
 api.add_resource(ViewBR,'/api/viewBR')
 api.add_resource(ViewBRLevels,'/api/viewBRLevels')
 api.add_resource(AddBR,'/api/addBR')
-api.add_resource(RequestBR,'/api/requestBR')
+api.add_resource(RequestBR,'/api/requestBR/<bloodType>')
 
 
 if __name__ == "__main__":
