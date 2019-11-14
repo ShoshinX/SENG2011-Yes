@@ -1,6 +1,6 @@
 from flask import Flask 
 from flask_restful import reqparse, abort, Api, Resource
-from controller import Controller
+from Controller import Controller
 
 app = Flask(__name__)
 api = Api(app)
