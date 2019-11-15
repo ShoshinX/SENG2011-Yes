@@ -1,4 +1,4 @@
-import ShoddyDate
+from ShoddyDate import Date
 
 class BloodRecord: 
     def __init__(self, bt, loc, dd1, mm1, yy1, dd2, mm2, yy2, ok):
