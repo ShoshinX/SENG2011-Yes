@@ -25,6 +25,7 @@ class BloodRecord:
     # -1 for this blood record expires first
     # 1 for other blood record expires first
     # 0 for both blood records expire together
+
     # compareExpiration name method
     def __le__(self,b):
         #t1 = 
