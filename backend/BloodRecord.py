@@ -25,15 +25,17 @@ class BloodRecord:
     # -1 for this blood record expires first
     # 1 for other blood record expires first
     # 0 for both blood records expire together
-    def compareExpiration(self,b):
-        t1 = self.expiryDate < b.expiryDate
-        t2 = b.expiryDate < self.expiryDate
+    # compareExpiration name method
+    def __le__(self,b):
+        #t1 = 
+        return self.expiryDate <= b.expiryDate
+        #t2 = b.expiryDate < self.expiryDate
 
-        if(t1):
-            return -1
-        elif(t2):
-            return 1
-        else:
-            return 0
+        #if(t1):
+        #    return -1
+        #elif(t2):
+        #    return 1
+        #else:
+        #    return 0
 
 

@@ -16,7 +16,7 @@ class Date:
         self.year = yy
 
     # overloading lessThan
-    def __lt__(self, p2):
+    def __le__(self, p2):
         dayComparator = p2.day > self.day
         monthComparator = (p2.month > self.month) or (dayComparator and (p2.month == self.month))
         yearComparator = (p2.year > self.year) or (monthComparator and p2.year == self.year)

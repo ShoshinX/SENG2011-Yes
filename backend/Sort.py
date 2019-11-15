@@ -17,7 +17,7 @@ def mergeSort(seq):
         if (len(seq) == 1):
             return seq
         if (len(seq) == 2):
-            if(seq[0].expiryDate.__lt__(seq[1].expiryDate)):
+            if(seq[0] <= seq[1]):
                 return [seq[0],seq[1]]
             else:
                 return [seq[1],seq[0]]
