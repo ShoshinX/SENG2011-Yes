@@ -1,6 +1,7 @@
 from Quack import Quack
 from BloodType import BloodType
 import sys
+from BloodRecord import BloodRecord
 
 class BloodBank():
 
@@ -9,6 +10,15 @@ class BloodBank():
         self.B = Quack(1)
         self.AB = Quack(1)
         self.O = Quack(1)
+
+    def BRToJSONString(self,bloodRecord):
+        return {"BloodType": bloodRecord.bType.name, "location": bloodRecord.location, "donationDate": bloodRecord.donationDate.toString(), "expiryDate": bloodRecord.expiryDate.toString(), "isOkay": bloodRecord.isOkay}
+    
+    def ViewAll(self):
+        return [self.BRToJSONString(x) for x in self.A.buf[self.A.m:self.A.n] + self.B.buf[self.B.m:self.B.n] + self.AB.buf[self.AB.m:self.AB.n] + self.O.buf[self.O.m:self.O.n]]
+    
+    def ViewBRLevels(self):
+        return [self.A.Length(),self.B.Length(),self.AB.Length(),self.O.Length()]
 
     def Empty(self, bloodType):
         try:
@@ -42,18 +52,20 @@ class BloodBank():
         except Exception as inst:
             print("Blood Type doesn't Exist in Pop", file=sys.stderr)
     def Qop(self, bloodType):
+        #TODO handle removal of bad blood and expired blood
         try:
             if bloodType not in BloodType:
                 raise Exception()
             else:
                 if bloodType == BloodType.A:
-                    return self.A.Qop()
+                    r = self.A.Qop()
                 elif bloodType == BloodType.B:
-                    return self.B.Qop()
+                    r = self.B.Qop()
                 elif bloodType == BloodType.AB:
-                    return self.AB.Qop()
+                    r = self.AB.Qop()
                 elif bloodType == BloodType.O:
-                    return self.O.Qop()
+                    r = self.O.Qop()
+                return self.BRToJSONString(r)
         except Exception as inst:
             print("Blood Type doesn't Exist in Qop", file=sys.stderr)
     def Push(self, bloodType, bloodRecord):

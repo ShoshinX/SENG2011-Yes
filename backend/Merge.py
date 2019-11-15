@@ -18,3 +18,4 @@ def merge(s1, s2):
   if (k >= len(s2) and j < len(s1)):
     s3 = s3 + s1[j:]
 
+  return s3

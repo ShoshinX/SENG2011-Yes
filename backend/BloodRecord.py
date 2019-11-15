@@ -9,23 +9,23 @@ class BloodRecord:
         self.expiryDate = Date(dd2,mm2,yy2) 
         self.isOkay = ok
 
-    def hasExpired():
+    def hasExpired(self):
         current = Date(22,11,2019)
         tmp = (current < self.expiryDate)
         if(tmp):
-            return false
+            return False
         else: 
-            return true
+            return True
 
-    def checkAndMark():
-        expire = hasExpired()
+    def checkAndMark(self):
+        expire = self.hasExpired()
         if(expire):
             self.isOkay = False
         
     # -1 for this blood record expires first
     # 1 for other blood record expires first
     # 0 for both blood records expire together
-    def compareExpiration(b):
+    def compareExpiration(self,b):
         t1 = self.expiryDate < b.expiryDate
         t2 = b.expiryDate < self.expiryDate
 

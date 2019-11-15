@@ -1,4 +1,5 @@
 import sys
+from Sort import mergeSort
 class Quack:
     def __init__(self,size):
         try:
@@ -30,9 +31,17 @@ class Quack:
                 b = [None] * (len(self.buf)*2)
             for i in range(0,self.n - self.m):
                 b[i] = self.buf[self.m + i]
+            self.buf, self.m, self.n = b, 0, self.n - self.m
         self.buf[self.n],self.n = x, self.n + 1
+        self.SortSelf()
     
     def HeadTail(self):
         # TODO make sure m and n are not equal
         self.buf[self.m], self.buf[self.n-1] = self.buf[self.n-1], self.buf[self.m]
+    
+    def Length(self):
+        return self.n - self.m
+    
+    def SortSelf(self):
+        self.buf = self.buf[:self.m] + mergeSort(self.buf[self.m:self.n]) + self.buf[self.n:]
 
