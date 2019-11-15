@@ -38,10 +38,12 @@ class AddBR(Resource):
         controller.addBR(BloodType.FromStrToEnum(bt), loc, 
             ProdDate.day, ProdDate.month, ProdDate.year,
             ExpDate.day, ExpDate.month, ExpDate.year, isOkay)
+        # TODO handle giving notifications to vampire about low levels of blood
         return 'successfully added new BloodRecord', 200
 class RequestBR(Resource):
     def get(self,bloodType):
         args = parser.parse_args()
+        # TODO Handle removal of expired blood
         return controller.RequestBR(BloodType.FromStrToEnum(bloodType))
 
 api.add_resource(ViewLog,'/api/viewLog')

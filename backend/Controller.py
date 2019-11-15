@@ -12,6 +12,7 @@ class Controller():
     def addBR(self,bloodType, Location, day1, month1, year1, day2, month2, year2, isOkay):
         #TODO Add the logs and notif triggers
         self.bloodBank.Push(bloodType,BloodRecord(bloodType,Location,day1,month1,year1,day2,month2,year2,isOkay))
+        self.log.addLog("addBloodRecord", bloodType.name)
         #TODO what about returning a message about the Blood levels being too low?
     #TODO log and Notif
     #def ViewNotif(self):
