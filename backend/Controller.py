@@ -16,7 +16,7 @@ class Controller():
     #def ViewNotif():
     #def ViewLog():
     def ViewBR(self):
-        # TODO transform BloodRecords into Strings
+        # transform BloodRecords into Strings
         return self.bloodBank.ViewAll() 
     def ViewBRLevels(self):
         return self.bloodBank.ViewBRLevels()
