@@ -30,6 +30,7 @@ class Quack:
                 b = [None] * (len(self.buf)*2)
             for i in range(0,self.n - self.m):
                 b[i] = self.buf[self.m + i]
+            self.buf, self.m, self.n = b, 0, self.n - self.m
         self.buf[self.n],self.n = x, self.n + 1
     
     def HeadTail(self):
