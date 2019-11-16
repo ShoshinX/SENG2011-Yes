@@ -56,6 +56,7 @@ module DateRep
   // d1 is before d2
   method lessThan(d1:Date, d2:Date) returns (b: bool)
     ensures b <==> pLessThan(d1, d2)
+    ensures !b <==> (pEqual(d1,d2) || pGreaterThan(d1,d2))
   {
     // Compare days
     b := d2.day > d1.day;
@@ -67,14 +68,18 @@ module DateRep
 
   method greaterThan(d1:Date, d2:Date) returns (b: bool)
     ensures b <==> pGreaterThan(d1, d2)
+    ensures !b <==> (pEqual(d1,d2) || pLessThan(d1,d2))
   {
-    b := lessThan(d2, d1)
+    b := lessThan(d2, d1);
   }
 
   method equal(d1:Date, d2:Date) returns (b: bool)
     ensures b <==> pEqual(d1, d2)
   {
-    b := !lessThan(d1, d2) && !greaterThan(d1,d2)
+    var a1 := lessThan(d1, d2);
+    var a2 := lessThan(d2,d1);
+    b := !(a1 || a2);
+    
   }
 
   method lessThanEqual(d1:Date, d2:Date) returns (b: bool)
