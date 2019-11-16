@@ -43,6 +43,16 @@ module DateRep
               || (d1.year == d2.year && d1.month == d2.month && d1.day < d2.day) 
   }
   
+  predicate pGreaterThan(d1: Date, d2: Date) {
+    (d1.year > d2.year) 
+              || (d1.year == d2.year && d1.month > d2.month) 
+              || (d1.year == d2.year && d1.month == d2.month && d1.day > d2.day) 
+  }
+
+  predicate pEqual(d1: Date, d2: Date) {
+    (d1.year == d2.year && d1.month == d2.month && d1.day == d2.day) 
+  }
+
   // d1 is before d2
   method lessThan(d1:Date, d2:Date) returns (b: bool)
     ensures b <==> pLessThan(d1, d2)
@@ -55,6 +65,32 @@ module DateRep
     b := (d2.year > d1.year) || (b && d2.year == d1.year);
   }
 
+  method greaterThan(d1:Date, d2:Date) returns (b: bool)
+    ensures b <==> pGreaterThan(d1, d2)
+  {
+    b := lessThan(d2, d1)
+  }
+
+  method equal(d1:Date, d2:Date) returns (b: bool)
+    ensures b <==> pEqual(d1, d2)
+  {
+    b := !lessThan(d1, d2) && !greaterThan(d1,d2)
+  }
+
+  method lessThanEqual(d1:Date, d2:Date) returns (b: bool)
+    ensures b <==> pLessThan(d1, d2) || pEqual(d1,d2)
+  {
+    b := greaterThan(d1, d2);
+    b := !b;
+  }
+
+  method greaterThanEqual(d1:Date, d2:Date) returns (b: bool)
+    ensures b <==> pGreaterThan(d1, d2) || pEqual(d1,d2)
+  {
+    b := lessThan(d1, d2);
+    b := !b;
+  }
+
   // For testing module
   method Test()
   {
@@ -62,24 +98,30 @@ module DateRep
     var b := Date(21, 1, 2015);
 
     var test1 := lessThan(a, b);
-    var test2 := lessThan(b, a);
-    var test3 := lessThan(b, b);
+    var test2 := greaterThan(b, a);
+    var test3 := equal(b, b);
 
     assert (test1);
-    assert (!test2);    
-    assert (!test3);
+    assert (test2);    
+    assert (test3);
 
     var sameYear1 := Date(21, 2, 2015);
     var sameYear2 := Date(11, 1, 2015);
   
     var testYear := lessThan(sameYear2, sameYear1);
+    var testYear1:= greaterThan(sameYear2, sameYear1);
+    var testYear2:= equal(sameYear2, sameYear1);
     assert(testYear);    
+    assert(!testYear1);    
+    assert(!testYear2);    
 
     var sameYearMonth1 := Date(21, 2, 2015);
     var sameYearMonth2 := Date(1, 2, 2015);
 
     var testYearMonth := lessThan(sameYearMonth2, sameYearMonth1);
     assert(testYearMonth);
+    assert(!testYear1);    
+    assert(!testYear2);    
 
   }
   
