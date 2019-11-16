@@ -32,7 +32,7 @@ class SDate:
         return !(self < p2)
         
     def __eq__(self, p2):
-        return !(self < p2 and self > p2)
+        return !(self < p2 or self > p2)
 
     def toString(self):
         return str(self.year) + "-" + str(self.month) + "-" + str(self.day)
