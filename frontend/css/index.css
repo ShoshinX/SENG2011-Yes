@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    background: linear-gradient(to bottom right, #33ccff 0%, #ff99cc 100%);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+#navbar li {
+    float: left;
+}
+
+#navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: "Comfortaa";
+}
+
+#navbar li a:hover {
+    background-color: #111;
+}
+
+#Content {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+}
+
+#LoginForm {
+    padding-top: 10em;
+}
+
+#LoginForm h1 {
+    margin: 0;
+    font-size: 5em;
+    font-family: "Comfortaa";
+    color: white;
+}
+
+#LoginForm input {
+    margin-top: 2em;
+    padding: 0.1em 0.5em 0.1em 0.5em;
+    border: none;
+    background-color: #33ccff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 2em;
+    border-radius: 1em;
+    border: 0.1em solid #33ccff;
+    transition-duration: 0.4s;
+    font-family: "Comfortaa";
+}
+
+#LoginForm input:hover {
+    background-color: white;
+    color: #33ccff;
+    border: 0.1em solid #33ccff;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+tr:hover {
+    background-color: lightblue;
+}
