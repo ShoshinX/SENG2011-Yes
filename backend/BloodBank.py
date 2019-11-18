@@ -101,3 +101,70 @@ class BloodBank():
                     self.O.HeadTail()
         except Exception as inst:
             print("Blood Type doesn't Exist in HeadTail", file=sys.stderr)
+            
+    def GetBloodMatch(self, bloodRec): 
+        bType = bloodREc.bType
+        try: 
+            if not CompatibleBloodExists(bType):
+                raise Exception()
+            else:
+                target = CompatibleBlood(bType)
+                if bloodType == BloodType.A:
+                    self.A.Qop()
+                elif bloodType == BloodType.B:
+                    self.B.Qop()
+                elif bloodType == BloodType.AB:
+                    self.AB.Qop()
+                elif bloodType == BloodType.O:
+                    self.O.Qop()
+        except Exception as inst: #Not sure why 
+            print("No compatible blood existed", file=sys.stderr)
+
+    def CompatibleBloodExists(self, bType):
+        if(bType == BloodType.A):
+            existsA = BloodExists(self.A) 
+            existsO = BloodExists(self.O)
+            return (existsA or existsO)
+        elif(bType == BloodType.B):
+            existsB = BloodExists(self.B)
+            existsO = BloodExists(self.O)
+            return (existsB or existsO)
+        elif(bType == BloodType.AB):
+            existsA = BloodExists(self.A)
+            existsB = BloodExists(self.B)
+            existsAB = BloodExists(self.AB)
+            existsO = BloodExists(self.O)
+            return (existsA or existsB or existsAB or existsO)
+        elif(bType == BloodType.O):
+            existsO = BloodExists(self.O)
+            return existsO
+
+    # Unverified
+    def CompatibleBlood(self, bType):
+        if(bType == BloodType.A):
+            if(BloodExists(self.A)): 
+                return BloodType.A
+            if(BloodExists(self.O)):
+                return BloodType.O
+        elif(bType == BloodType.B):
+            if(BloodExists(self.B)):
+                return BloodType.B
+            if(BloodExists(self.O)):
+                return BloodType.O
+        elif(bType == BloodType.AB):
+            if(BloodExists(self.A)):
+                return BloodType.A
+            if(BloodExists(self.B)):
+                return BloodType.B
+            if(BloodExists(self.AB)):
+                return BloodType.AB
+            if(BloodExists(self.O)):
+                return BloodType.O
+        elif(bType == BloodType.O):
+            if(BloodExists(self.O)):
+                return BloodType.O
+
+    def BloodExists(self, bloodQuack):
+        return bloodQuack.Length() != 0
+
+
