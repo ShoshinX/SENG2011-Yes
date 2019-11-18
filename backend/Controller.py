@@ -12,12 +12,14 @@ class Controller():
     def addBR(self,bloodType, Location, day1, month1, year1, day2, month2, year2, isOkay):
         #TODO Add the logs and notif triggers
         self.bloodBank.Push(bloodType,BloodRecord(bloodType,Location,day1,month1,year1,day2,month2,year2,isOkay))
-        self.log.addLog("addBloodRecord", bloodType.name)
-        #TODO what about returning a message about the Blood levels being too low?
-    #TODO log and Notif
-    #def ViewNotif(self):
+        self.log.addLog("addBloodRecord", "Added Blood Record: {}, {}-{}-{}, {}-{}-{}, {}".format(bloodType.name, year1, month1, day1, year2, month2, day2, Location), "success")
+        if(self.bloodBank.BelowThreshold(1)):
+            self.notif.addNotif("Not enough blood added to guarantee minimum supply")
+            self.log.addLog("addBloodRecord", "Minimum supply not met after insertion", "failure")
+    def ViewNotifs(self):
+        return self.notif.viewNotifs()
     def ViewLog(self):
-        return self.log.log
+        return self.log.viewLog()
     def ViewBR(self):
         # transform BloodRecords into Strings
         return self.bloodBank.ViewAll() 
@@ -25,4 +27,15 @@ class Controller():
         return self.bloodBank.ViewBRLevels()
     def RequestBR(self, bloodType):
         #TODO implement the blood matching algorithm
-        return self.bloodBank.Qop(bloodType)
+        if(self.bloodBank.BelowThreshold(-1)):
+            self.notif.addNotif("Removal results in Blood Levels below minimum supply")
+            self.log.addLog("bloodRequest", "Minimum supply not guaranteed after removal", "failure")
+            return None
+        if(not self.bloodBank.Empty(bloodType)):
+            self.notif.addNotif("One unit of {} type blood has been used".format(bloodType.name))
+            requestedBlood = self.bloodBank.Qop(bloodType)
+            self.log.addLog("bloodRequest", "Blood Record: {} used to respond to request".format(bloodType.name), "success")
+            return requestedBlood
+        else:
+            self.log.addLog("bloodRequest", "No available blood of type {}".format(bloodType.name), "failure")
+            return None

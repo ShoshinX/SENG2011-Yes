@@ -1,12 +1,12 @@
-from ShoddyDate import Date
+from ShoddyDate import SDate
 
 class BloodRecord: 
     def __init__(self, bt, loc, dd1, mm1, yy1, dd2, mm2, yy2, ok):
         # Throw error on bad input
         self.bType = bt
         self.location = loc
-        self.donationDate = Date(dd1,mm1,yy1) 
-        self.expiryDate = Date(dd2,mm2,yy2) 
+        self.donationDate = SDate(dd1,mm1,yy1) 
+        self.expiryDate = SDate(dd2,mm2,yy2) 
         self.isOkay = ok
 
     def hasExpired(self):

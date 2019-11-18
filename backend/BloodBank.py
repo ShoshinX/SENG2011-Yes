@@ -19,6 +19,9 @@ class BloodBank():
     
     def ViewBRLevels(self):
         return [self.A.Length(),self.B.Length(),self.AB.Length(),self.O.Length()]
+        
+    def BelowThreshold(self, n):
+        return self.A.Length() + self.B.Length() + self.AB.Length() + self.O.Length() + n <= 4
 
     def Empty(self, bloodType):
         try:
@@ -26,13 +29,13 @@ class BloodBank():
                 raise Exception()
             else:
                 if bloodType == BloodType.A:
-                    self.A.Empty()
+                    return self.A.Empty()
                 elif bloodType == BloodType.B:
-                    self.B.Empty()
+                    return self.B.Empty()
                 elif bloodType == BloodType.AB:
-                    self.AB.Empty()
+                    return self.AB.Empty()
                 elif bloodType == BloodType.O:
-                    self.O.Empty()
+                    return self.O.Empty()
         except Exception as inst:
             print("Blood Type doesn't Exist in Empty", file=sys.stderr)
 

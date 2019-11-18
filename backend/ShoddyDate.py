@@ -26,13 +26,13 @@ class SDate:
         return p2 < self
 
     def __le__(self, p2):
-        return !(self > p2)
+        return not (self > p2)
 
     def __ge__(self, p2):
-        return !(self < p2)
+        return not (self < p2)
         
     def __eq__(self, p2):
-        return !(self < p2 or self > p2)
+        return not (self < p2 or self > p2)
 
     def toString(self):
         return str(self.year) + "-" + str(self.month) + "-" + str(self.day)

@@ -5,3 +5,6 @@ class Notification():
     
     def addNotif(self, notif):
         self.notifs.append(notif)
+        
+    def viewNotifs(self):
+        return self.notifs
