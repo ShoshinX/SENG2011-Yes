@@ -1,5 +1,4 @@
 class Notification():
-    #TODO
     def __init__(self):
         self.notifs = []
     

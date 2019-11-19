@@ -55,7 +55,6 @@ class BloodBank():
         except Exception as inst:
             print("Blood Type doesn't Exist in Pop", file=sys.stderr)
     def Qop(self, bloodType):
-        #TODO handle removal of bad blood and expired blood
         try:
             if bloodType not in BloodType:
                 raise Exception()
