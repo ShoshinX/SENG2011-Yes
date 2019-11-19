@@ -2,6 +2,6 @@
 
 Run from frontend folder.
 
-python -m http.server 
+npm install http-server
 
-If it fails to create a server consider using python3.
+node node_modules/http-server/bin/http-server -p 8000 --cors

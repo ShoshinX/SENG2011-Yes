@@ -56,6 +56,9 @@ function setupVampirePage() {
 }
 async function getBloodInfo() {
     let bloodTable = document.getElementById("bloodTable");
+    while (bloodTable.childElementCount != 1) {
+        bloodTable.removeChild(bloodTable.lastChild);
+    }
     let jsonResp = await fetch("http://localhost:9000/api/viewBR").then((resp) => resp.json());
     const bloodRecords = jsonResp.BloodRecords;
     for (let index = 0; index < bloodRecords.length; index++) {
@@ -82,6 +85,9 @@ async function getBloodInfo() {
 }
 async function getNotif() {
     let notifTable = document.getElementById("notification");
+    while (notifTable.childElementCount != 1) {
+        notifTable.removeChild(notifTable.lastChild);
+    }
     let jsonResp = await fetch("http://localhost:9000/api/viewNotifs").then((resp) => resp.json());
     const notifs = jsonResp.Notifications.reverse();
     for (let index = 0; index < notifs.length; index++) {
@@ -95,6 +101,9 @@ async function getNotif() {
 }
 async function getLog() {
     let logTable = document.getElementById("log");
+    while (logTable.childElementCount != 1) {
+        logTable.removeChild(logTable.lastChild);
+    }
     let jsonResp = await fetch("http://localhost:9000/api/viewLog").then((resp) => resp.json());
     const logs = jsonResp.Log.reverse();
     for (let index = 0; index < logs.length; index++) {
@@ -111,12 +120,15 @@ async function getLog() {
 
 }
 async function getBloodLevels() {
-    let logTable = document.getElementById("bloodLevelTable");
+    let bloodLevelTable = document.getElementById("bloodLevelTable");
+    while (bloodLevelTable.childElementCount != 1) {
+        bloodLevelTable.removeChild(bloodLevelTable.lastChild);
+    }
     let jsonResp = await fetch("http://localhost:9000/api/viewBRLevels").then((resp) => resp.json());
     const logs = jsonResp.BloodRecordsLevels;
     console.log(logs);
     let newRow_tr = document.createElement("tr");
-    logTable.appendChild(newRow_tr);
+    bloodLevelTable.appendChild(newRow_tr);
     for (let index = 0; index < logs.length; index++) {
         const log = logs[index];
         let level_td = document.createElement("td");
@@ -144,12 +156,10 @@ function bloodInsert_form() {
     EDate_input.id = "exp date";
     EDate_input.type = "date";
     EDate_input.placeholder = "Exp. Date";
-    let Freshness_input = document.createElement("input");
+    let Freshness_input = document.createElement("select");
     Freshness_input.id = "freshness";
     Freshness_input.placeholder = "freshness";
-    let IsOkay_input = document.createElement("input");
-    Freshness_input.id = "isOkay";
-    Freshness_input.placeholder = "isOkay";
+    trueFalse(Freshness_input);
     input_div.appendChild(BType_input);
     input_div.appendChild(Origin_input);
     input_div.appendChild(PDate_input);
@@ -160,9 +170,28 @@ function bloodInsert_form() {
     let submit_input = document.createElement("input");
     submit_input.type = "submit";
     submit_input.value = "insert";
-    input_div.addEventListener("submit", e => {
+    BIForm.addEventListener("submit", e => {
         e.preventDefault();
         // TODO submit action add here
+        let br = {
+            BloodType: BType_input.value,
+            Location: Origin_input.value,
+            ProdDate: PDate_input.value,
+            ExpDate: EDate_input.value,
+            IsOkay: Freshness_input.value
+        }
+        fetch("http://localhost:9000/api/addBR", {
+            method: "POST",
+            body: JSON.stringify(br),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            getBloodInfo();
+            getBloodLevels();
+            getLog();
+            getNotif()
+        });
     })
     submit_div.appendChild(submit_input);
     BIForm.appendChild(submit_div);
@@ -170,6 +199,12 @@ function bloodInsert_form() {
 }
 
 function bloodtypes(bloodtype_sel) {
+    let BloodType = document.createElement("option");
+    BloodType.value = "BloodType";
+    BloodType.innerText = "BloodType";
+    BloodType.setAttribute("disabled", "");
+    BloodType.setAttribute("selected", "");
+    BloodType.setAttribute("value", "");
     let A = document.createElement("option");
     A.value = "A";
     A.innerText = "A";
@@ -182,11 +217,29 @@ function bloodtypes(bloodtype_sel) {
     let O = document.createElement("option");
     O.value = "O";
     O.innerText = "O";
+    bloodtype_sel.appendChild(BloodType);
     bloodtype_sel.appendChild(A);
     bloodtype_sel.appendChild(B);
     bloodtype_sel.appendChild(AB);
     bloodtype_sel.appendChild(O);
+}
 
+function trueFalse(select) {
+    let isFresh = document.createElement("option");
+    isFresh.value = "isFresh";
+    isFresh.innerText = "isFresh";
+    isFresh.setAttribute("disabled", "");
+    isFresh.setAttribute("selected", "");
+    isFresh.setAttribute("value", "");
+    let True = document.createElement("option");
+    True.value = "True";
+    True.innerText = "True";
+    let False = document.createElement("option");
+    False.value = "False";
+    False.innerText = "False";
+    select.appendChild(isFresh);
+    select.appendChild(True);
+    select.appendChild(False);
 }
 
 export { setupVampirePage };
