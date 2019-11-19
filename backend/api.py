@@ -42,7 +42,6 @@ class AddBR(Resource):
 class RequestBR(Resource):
     def get(self,bloodType):
         args = parser.parse_args()
-        # TODO Handle removal of expired blood
         return controller.RequestBR(BloodType.FromStrToEnum(bloodType))
 
 api.add_resource(ViewNotifs,'/api/viewNotifs')
