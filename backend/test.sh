@@ -17,3 +17,6 @@ curl http://localhost:$port/api/viewBRLevels
 
 curl http://localhost:$port/api/viewBR
 
+curl http://localhost:$port/api/viewLog
+
+curl http://localhost:$port/api/requestBR/A

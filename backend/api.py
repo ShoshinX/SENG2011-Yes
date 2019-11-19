@@ -25,9 +25,6 @@ class ViewBRLevels(Resource):
     def get(self):
         # [A,B,AB,O]
         return {'BloodRecordsLevels':controller.ViewBRLevels()}, 200
-class ViewNotif(Resource):
-    def get(self):
-        return
 class AddBR(Resource):
     def post(self):
         json_data = request.get_json()

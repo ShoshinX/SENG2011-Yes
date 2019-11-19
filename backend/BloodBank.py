@@ -104,66 +104,66 @@ class BloodBank():
             
     def GetBloodMatch(self, bType): 
         try: 
-            if not CompatibleBloodExists(bType):
+            if not self.CompatibleBloodExists(bType):
                 raise Exception()
             else:
-                target = CompatibleBlood(bType)
-                if bloodType == BloodType.A:
-                    self.A.Qop()
-                elif bloodType == BloodType.B:
-                    self.B.Qop()
-                elif bloodType == BloodType.AB:
-                    self.AB.Qop()
-                elif bloodType == BloodType.O:
-                    self.O.Qop()
+                target = self.CompatibleBlood(bType)
+                if target == BloodType.A:
+                    return self.Qop(target)
+                elif target == BloodType.B:
+                    return self.Qop(target)
+                elif target == BloodType.AB:
+                    return self.Qop(target)
+                elif target == BloodType.O:
+                    return self.Qop(target)
         except Exception as inst: #Not sure why 
             print("No compatible blood existed", file=sys.stderr)
 
     def CompatibleBloodExists(self, bType):
         if(bType == BloodType.A):
-            existsA = BloodExists(self.A) 
-            existsO = BloodExists(self.O)
+            existsA = not self.Empty(BloodType.A)
+            existsO = not self.Empty(BloodType.O)
             return (existsA or existsO)
         elif(bType == BloodType.B):
-            existsB = BloodExists(self.B)
-            existsO = BloodExists(self.O)
+            existsB = not self.Empty(BloodType.B)
+            existsO = not self.Empty(BloodType.O)
             return (existsB or existsO)
         elif(bType == BloodType.AB):
-            existsA = BloodExists(self.A)
-            existsB = BloodExists(self.B)
-            existsAB = BloodExists(self.AB)
-            existsO = BloodExists(self.O)
+            existsAB = not self.Empty(BloodType.AB)
+            existsA = not self.Empty(BloodType.A)
+            existsB = not self.Empty(BloodType.B)
+            existsO = not self.Empty(BloodType.O)
             return (existsA or existsB or existsAB or existsO)
         elif(bType == BloodType.O):
-            existsO = BloodExists(self.O)
+            existsO = not self.Empty(BloodType.O)
             return existsO
+        else:
+            return false
 
     # Unverified
     def CompatibleBlood(self, bType):
         if(bType == BloodType.A):
-            if(BloodExists(self.A)): 
+            if(not self.Empty(BloodType.A)): 
                 return BloodType.A
-            if(BloodExists(self.O)):
+            if(not self.Empty(BloodType.O)):
                 return BloodType.O
         elif(bType == BloodType.B):
-            if(BloodExists(self.B)):
+            if(not self.Empty(BloodType.B)):
                 return BloodType.B
-            if(BloodExists(self.O)):
+            if(not self.Empty(BloodType.O)):
                 return BloodType.O
         elif(bType == BloodType.AB):
-            if(BloodExists(self.A)):
-                return BloodType.A
-            if(BloodExists(self.B)):
-                return BloodType.B
-            if(BloodExists(self.AB)):
+            if(not self.Empty(BloodType.AB)):
                 return BloodType.AB
-            if(BloodExists(self.O)):
+            if(not self.Empty(BloodType.A)):
+                return BloodType.A
+            if(not self.Empty(BloodType.B)):
+                return BloodType.B
+            if(not self.Empty(BloodType.O)):
                 return BloodType.O
         elif(bType == BloodType.O):
-            if(BloodExists(self.O)):
+            if(not self.Empty(BloodType.O)):
                 return BloodType.O
 
-    def BloodExists(self, bloodQuack):
-        return bloodQuack.Length() != 0
 
 
