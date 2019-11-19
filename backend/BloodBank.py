@@ -54,6 +54,7 @@ class BloodBank():
                     return self.O.Pop()
         except Exception as inst:
             print("Blood Type doesn't Exist in Pop", file=sys.stderr)
+            
     def Qop(self, bloodType):
         #TODO handle removal of bad blood and expired blood
         try:
@@ -71,6 +72,7 @@ class BloodBank():
                 return r
         except Exception as inst:
             print("Blood Type doesn't Exist in Qop", file=sys.stderr)
+            
     def Push(self, bloodType, bloodRecord):
         try:
             if bloodType not in BloodType:
@@ -86,6 +88,7 @@ class BloodBank():
                     self.O.Push(bloodRecord)
         except Exception as inst:
             print("Blood Type doesn't Exist in Push", file=sys.stderr)
+            
     def HeadTail(self,bloodType):
         try:
             if bloodType not in BloodType:
@@ -116,7 +119,7 @@ class BloodBank():
                     return self.Qop(target)
                 elif target == BloodType.O:
                     return self.Qop(target)
-        except Exception as inst: #Not sure why 
+        except Exception as inst: 
             print("No compatible blood existed", file=sys.stderr)
 
     def CompatibleBloodExists(self, bType):
