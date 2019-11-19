@@ -7,7 +7,7 @@ function generateTable(tableHeaders, id) {
     let tbl = document.createElement("table");
     tbl.style.width = "100%";
     tbl.style.border = "1px solid black";
-    tbl.id = id;
+    tbl.setAttribute("id", id);
     tbl.appendChild(createHeaders(tableHeaders));
     return tbl;
 }
@@ -20,10 +20,6 @@ function createHeaders(tableHeaders) {
         header_row.appendChild(th);
     });
     return header_row;
-
-}
-
-function insertIntoTable() {
 
 }
 
