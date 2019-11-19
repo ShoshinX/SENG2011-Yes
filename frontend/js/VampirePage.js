@@ -126,21 +126,23 @@ async function getBloodLevels() {
 
 }
 
-
 function bloodInsert_form() {
     let BIForm = document.createElement("form");
     let input_div = document.createElement("div");
-    let BType_input = document.createElement("input");
+    let BType_input = document.createElement("select");
     BType_input.id = "blood type";
     BType_input.placeholder = "Blood Type";
+    bloodtypes(BType_input);
     let Origin_input = document.createElement("input");
     Origin_input.id = "origin";
     Origin_input.placeholder = "Origin";
     let PDate_input = document.createElement("input");
     PDate_input.id = "prod date";
+    PDate_input.type = "date";
     PDate_input.placeholder = "Prod. Date";
     let EDate_input = document.createElement("input");
     EDate_input.id = "exp date";
+    EDate_input.type = "date";
     EDate_input.placeholder = "Exp. Date";
     let Freshness_input = document.createElement("input");
     Freshness_input.id = "freshness";
@@ -167,5 +169,24 @@ function bloodInsert_form() {
     return BIForm;
 }
 
+function bloodtypes(bloodtype_sel) {
+    let A = document.createElement("option");
+    A.value = "A";
+    A.innerText = "A";
+    let B = document.createElement("option");
+    B.value = "B";
+    B.innerText = "B";
+    let AB = document.createElement("option");
+    AB.value = "AB";
+    AB.innerText = "AB";
+    let O = document.createElement("option");
+    O.value = "O";
+    O.innerText = "O";
+    bloodtype_sel.appendChild(A);
+    bloodtype_sel.appendChild(B);
+    bloodtype_sel.appendChild(AB);
+    bloodtype_sel.appendChild(O);
+
+}
 
 export { setupVampirePage };

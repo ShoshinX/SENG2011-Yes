@@ -3,8 +3,10 @@ from flask_restful import reqparse, abort, Api, Resource
 from Controller import Controller
 from BloodType import BloodType
 from datetime import date
+from flask_cors import CORS
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 api = Api(app)
 
 parser = reqparse.RequestParser()
