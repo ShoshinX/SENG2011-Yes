@@ -20,3 +20,4 @@ class BloodType(Enum):
       return cls.AB
     else:
       return cls.O
+    
