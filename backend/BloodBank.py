@@ -68,7 +68,7 @@ class BloodBank():
                     r = self.AB.Qop()
                 elif bloodType == BloodType.O:
                     r = self.O.Qop()
-                return self.BRToJSONString(r)
+                return r
         except Exception as inst:
             print("Blood Type doesn't Exist in Qop", file=sys.stderr)
     def Push(self, bloodType, bloodRecord):
