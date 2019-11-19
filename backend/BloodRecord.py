@@ -10,7 +10,7 @@ class BloodRecord:
         self.isOkay = ok
 
     def hasExpired(self):
-        current = Date(22,11,2019)
+        current = SDate(22,11,2019)
         tmp = (current < self.expiryDate)
         if(tmp):
             return False
