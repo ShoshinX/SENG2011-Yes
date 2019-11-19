@@ -102,8 +102,7 @@ class BloodBank():
         except Exception as inst:
             print("Blood Type doesn't Exist in HeadTail", file=sys.stderr)
             
-    def GetBloodMatch(self, bloodRec): 
-        bType = bloodREc.bType
+    def GetBloodMatch(self, bType): 
         try: 
             if not CompatibleBloodExists(bType):
                 raise Exception()
