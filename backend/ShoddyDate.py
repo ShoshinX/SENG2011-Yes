@@ -3,12 +3,12 @@ class SDate:
     def __init__(self, dd, mm, yy):
         if(dd < 0 ):
             raise ValueError('Day provided cannot be < 0.')
-        if(dd >= 31 ):
+        if(dd > 31 ):
             raise ValueError('Day provided cannot be >= 31. Note that date is counted from 0.')
         if(mm < 0 ):
             raise ValueError('Month provided cannot be < 0.')
-        if(mm >= 12):
-            raise ValueError('Month provided cannot be >= 12. Note that date is counted from 0.')
+        if(mm > 12):
+            raise ValueError('Month provided cannot be > 12. Note that date is counted from 0.')
         if(yy < 0): 
             raise ValueError('Year provided cannot be < 0.')
         self.day = dd
