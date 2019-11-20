@@ -12,14 +12,20 @@ curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"
 curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "AB", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-04", "IsOkay": "True"}'
 curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "AB", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-01", "IsOkay": "True"}'
 curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "AB", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-02", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "AB", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-02", "IsOkay": "True"}'
 
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "B", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-03", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "B", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-04", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "B", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-01", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "B", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-05", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "B", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-03", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "B", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-10", "IsOkay": "True"}'
 
-curl http://localhost:$port/api/viewBRLevels
-
-curl http://localhost:$port/api/viewBR
-
-curl http://localhost:$port/api/viewLog
-
-curl http://localhost:$port/api/requestBR/A
-curl http://localhost:$port/api/requestBR/A
-curl http://localhost:$port/api/requestBR/A
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-03", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-04", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-06", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-06", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-03", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-04", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-09", "IsOkay": "True"}'
+curl http://localhost:$port/api/addBR -H "Content-Type: application/json" -d '{"BloodType": "O", "Location": "unsw", "ProdDate": "2019-11-01", "ExpDate": "2020-01-06", "IsOkay": "True"}'
