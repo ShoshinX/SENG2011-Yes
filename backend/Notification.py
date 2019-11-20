@@ -1,10 +1,12 @@
+from datetime import datetime
 class Notification():
-    #TODO
     def __init__(self):
         self.notifs = []
     
     def addNotif(self, notif):
-        self.notifs.append(notif)
+        self.notifs.append((datetime.now().ctime(),notif))
         
     def viewNotifs(self):
-        return self.notifs
+        n = self.notifs
+        self.notifs = []
+        return n

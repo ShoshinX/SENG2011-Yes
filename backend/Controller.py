@@ -10,11 +10,14 @@ class Controller():
         self.bloodBank = BloodBank()
     
     def addBR(self,bloodType, Location, day1, month1, year1, day2, month2, year2, isOkay):
-        self.bloodBank.Push(bloodType,BloodRecord(bloodType,Location,day1,month1,year1,day2,month2,year2,isOkay))
-        self.log.addLog("addBloodRecord", "Added BloodRecord: {}, {}-{}-{}, {}-{}-{}, {}".format(bloodType.name, year1, month1, day1, year2, month2, day2, Location), "success")
-        if(self.bloodBank.BelowThreshold(1)):
-            self.notif.addNotif("Not enough blood added to guarantee minimum supply")
-            self.log.addLog("addBloodRecord", "Minimum supply not met after insertion", "success")
+        if(isOkay == "True"):
+            self.bloodBank.Push(bloodType,BloodRecord(bloodType,Location,day1,month1,year1,day2,month2,year2,isOkay))
+            self.log.addLog("addBloodRecord", "Added BloodRecord: {}, {}-{}-{}, {}-{}-{}, {}".format(bloodType.name, year1, month1, day1, year2, month2, day2, Location), "success")
+            if(self.bloodBank.BelowThreshold(1)):
+                self.notif.addNotif("Not enough blood added to guarantee minimum supply")
+                self.log.addLog("addBloodRecord", "Minimum supply not met after insertion", "success")
+        else:
+            self.log.addLog("addBloodRecord", "BloodRecord: {}, {}-{}-{}, {}-{}-{}, {} rejected".format(bloodType.name, year1, month1, day1, year2, month2, day2, Location), "failure")
     def ViewNotifs(self):
         return self.notif.viewNotifs()
     def ViewLog(self):

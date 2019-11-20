@@ -1,7 +1,6 @@
 from Log import Log
 from datetime import datetime
 class Logs():
-    #TODO
     def __init__(self):
         self.log = []
 
