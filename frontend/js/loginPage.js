@@ -44,7 +44,17 @@ function setupLoginPage() {
         e.preventDefault();
         //TODO implement token for identification of specific user
         // to change type of user, use code below
-        localStorage.setItem("userType", "hospital");
+        // get username and password;
+        let username = loginForm_username.value;
+        let password = loginForm_form.value;
+        switch (username) {
+            case "vampire":
+                localStorage.setItem("userType", "vampire");
+                break;
+            case "hospital":
+                localStorage.setItem("userType", "hospital");
+                break;
+        }
         initApp();
     });
     login_div.appendChild(loginForm_form);
