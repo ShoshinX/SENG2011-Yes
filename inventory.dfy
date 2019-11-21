@@ -190,11 +190,12 @@ this`A, this`B, this`AB, this`O
         requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
         requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); ensures A.Valid() && B.Valid() && AB.Valid() && O.Valid();
 
+        /*
 	method CompatibleBloodExists(bType:BR.BloodType) returns(b:bool)
         requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
-        ensures bType == BR.BloodType.B  ==> b <==> !(this.B.isEmpty() && this.O.isEmpty())
         ensures bType == BR.BloodType.A  ==> b <==> !(this.A.isEmpty() && this.O.isEmpty())
-        ensures bType == BR.BloodType.AB ==> b <==> !(this.A.isEmpty() && this.O.isEmpty() && this.O.isEmpty() && this.O.isEmpty())
+        ensures bType == BR.BloodType.B  ==> b <==> !(this.B.isEmpty() && this.O.isEmpty())
+        ensures bType == BR.BloodType.AB ==> b <==> !(this.A.isEmpty() && this.B.isEmpty() && this.AB.isEmpty() && this.O.isEmpty())
         ensures bType == BR.BloodType.O  ==> b <==> !(this.O.isEmpty())
         { 
             match(bType)
@@ -211,9 +212,12 @@ this`A, this`B, this`AB, this`O
                 { 
 		    var existsB := this.B.Empty();
 		    existsB := !existsB;
+                    assert(existsB ==> !this.B.isEmpty());
 		    var existsO := this.O.Empty();
 		    existsO := !existsO;
+                    assert(existsO ==> !this.O.isEmpty());
 		    b := existsB && existsO;
+                    assert(!(this.A.isEmpty() && this.O.isEmpty()));
                 }
                 case AB => 
                 { 
@@ -234,6 +238,7 @@ this`A, this`B, this`AB, this`O
             }
             b := false;
         }
+  */
 
     }
 
