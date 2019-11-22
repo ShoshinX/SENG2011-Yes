@@ -9,7 +9,10 @@ module inventory {
 
         predicate Valid() reads this, this.buf
         { 
-            buf != null && buf.Length != 0 && 0 <= m <= n <= buf.Length && shadow==buf[m..n]  
+            buf != null 
+            && buf.Length != 0 
+            && 0 <= m <= n <= buf.Length 
+            && shadow==buf[m..n]  
         }
 
         constructor(size: int) modifies this
@@ -145,6 +148,7 @@ module inventory {
             AB := new Quack(1); assert AB.buf != null && AB.buf.Length != 0;
             O := new Quack(1); assert O.buf != null && O.buf.Length != 0;
         }
+
         method Empty(t:BR.BloodType) returns (x:bool)
         modifies this.A, this.B, this.AB, this.O;
         requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
@@ -168,22 +172,31 @@ this`A, this`B, this`AB, this`O
         requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
         requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); ensures A.Valid() && B.Valid() && AB.Valid() && O.Valid();
 
-        method Push(t:BR.BloodType, x:BR.BloodRecord) modifies this, this`A, this`B, this`AB, this`O
-        requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
-        requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); ensures A.Valid() && B.Valid() && AB.Valid() && O.Valid();
-        requires t == BR.BloodType.A <==> BR.typeMatch(x,BR.BloodType.A);
-        requires t == BR.BloodType.B <==> BR.typeMatch(x, BR.BloodType.B);
-        requires t == BR.BloodType.AB <==> BR.typeMatch(x,BR.BloodType.AB);
-        requires t == BR.BloodType.O <==> BR.typeMatch(x, BR.BloodType.O);
-        //{
-        //    match (t)
-        //    {
-        //        case A => this.A.Push(x);
-        //        case B => this.B.Push(x);
-        //        case AB => this.AB.Push(x);
-        //        case O => this.O.Push(x);
-        //    }
-        //}
+        method Push(x:BR.BloodRecord) modifies this, this`A, this`B, this`AB, this`O
+        requires Valid() && ValidGroup();
+        requires x != null;
+        requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); 
+        ensures Valid(); 
+        ensures ValidGroup();
+        ensures A.Valid();
+        ensures B.Valid();
+        ensures AB.Valid();
+        ensures O.Valid();
+        modifies this, this.A, this.B, this.AB, this.O;
+        {
+            match (x.bType)
+            {
+                case A => 
+                {
+                    assert(this.A.Valid());
+                    this.A.Push(x);
+                    
+                }
+                case B => this.B.Push(x);
+                case AB => this.AB.Push(x);
+                case O => this.O.Push(x);
+            }
+        }
 
 
         method HeadTail()
