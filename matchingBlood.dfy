@@ -107,3 +107,8 @@ predicate isCompatible(bType1: BloodType, bType2: BloodType)
     }
 }
 
+method Test()
+{
+    var arr := new BloodRecord[4];
+    arr[0] := BloodRecord()
+}

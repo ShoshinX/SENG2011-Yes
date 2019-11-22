@@ -8,7 +8,9 @@ module inventory {
         ghost var shadow: seq<Data>;
 
         predicate Valid() reads this, this.buf
-        { buf != null && buf.Length != 0 && 0 <= m <= n <= buf.Length && shadow==buf[m..n] }
+        { 
+            buf != null && buf.Length != 0 && 0 <= m <= n <= buf.Length && shadow==buf[m..n]  
+        }
 
         constructor(size: int) modifies this
         requires size > 0;
@@ -21,8 +23,14 @@ module inventory {
             shadow := [];
         }
 
+        predicate isEmpty()
+        reads this
+        {
+          shadow == []
+        }
+
         method Empty() returns (x:bool)
-        ensures x <==> shadow == []
+        ensures x <==> isEmpty() 
         requires Valid(); ensures Valid();
         { x := m==n; }
 
@@ -72,7 +80,7 @@ module inventory {
             buf[n],n := x, n+1;
             shadow := shadow + [x];
         }
-
+/*
         method HeadTail()
         modifies this, this.buf;
         requires buf!=null
@@ -89,7 +97,7 @@ module inventory {
                 shadow := [shadow[|shadow|-1]] + shadow[1..|shadow|-1] + [shadow[0]];
             } 
         }   
-
+*/
     }
 
     class Inventory
@@ -118,10 +126,10 @@ module inventory {
         requires Valid()
         reads this, this.A, this.A.buf, this.B, this.B.buf ,this.AB, this.AB.buf ,this.O, this.O.buf;
         { 
-            (forall i :: 0 <= A.m <= i < A.n <= A.buf.Length ==> A.buf[i].bType == BR.BloodType.A) &&
-            (forall i :: 0 <= B.m <= i < B.n <= B.buf.Length ==> B.buf[i].bType == BR.BloodType.B) &&
-            (forall i :: 0 <= AB.m <= i < AB.n <= AB.buf.Length ==> AB.buf[i].bType == BR.BloodType.AB) &&
-            (forall i :: 0 <= O.m <= i < O.n <= O.buf.Length ==> O.buf[i].bType == BR.BloodType.O)
+            (forall i :: 0 <= A.m <= i < A.n <= A.buf.Length ==> BR.typeMatch(A.buf[i], BR.BloodType.A) ) &&
+            (forall i :: 0 <= B.m <= i < B.n <= B.buf.Length ==> BR.typeMatch(B.buf[i], BR.BloodType.B)) &&
+            (forall i :: 0 <= AB.m <= i < AB.n <= AB.buf.Length ==> BR.typeMatch(AB.buf[i], BR.BloodType.AB)) &&
+            (forall i :: 0 <= O.m <= i < O.n <= O.buf.Length ==> BR.typeMatch(O.buf[i], BR.BloodType.O))
         }
 
         constructor() modifies this
@@ -155,17 +163,18 @@ module inventory {
         requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); ensures A.Valid() && B.Valid() && AB.Valid() && O.Valid();
         modifies this.A, this.B, this.AB, this.O
 
-        method Qop(t:BR.BloodType) returns (x: BR.BloodRecord) modifies this, this`A, this`B, this`AB, this`O
+	method Qop(t:BR.BloodType) returns (x: BR.BloodRecord) modifies this,
+this`A, this`B, this`AB, this`O
         requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
         requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); ensures A.Valid() && B.Valid() && AB.Valid() && O.Valid();
 
         method Push(t:BR.BloodType, x:BR.BloodRecord) modifies this, this`A, this`B, this`AB, this`O
         requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
         requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); ensures A.Valid() && B.Valid() && AB.Valid() && O.Valid();
-        requires t == BR.BloodType.A <==> x.bType == BR.BloodType.A;
-        requires t == BR.BloodType.B <==> x.bType == BR.BloodType.B;
-        requires t == BR.BloodType.AB <==> x.bType == BR.BloodType.AB;
-        requires t == BR.BloodType.O <==> x.bType == BR.BloodType.O;
+        requires t == BR.BloodType.A <==> BR.typeMatch(x,BR.BloodType.A);
+        requires t == BR.BloodType.B <==> BR.typeMatch(x, BR.BloodType.B);
+        requires t == BR.BloodType.AB <==> BR.typeMatch(x,BR.BloodType.AB);
+        requires t == BR.BloodType.O <==> BR.typeMatch(x, BR.BloodType.O);
         //{
         //    match (t)
         //    {
@@ -180,6 +189,58 @@ module inventory {
         method HeadTail()
         requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
         requires A.Valid() && B.Valid() && AB.Valid() && O.Valid(); ensures A.Valid() && B.Valid() && AB.Valid() && O.Valid();
+
+        /*
+	method CompatibleBloodExists(bType:BR.BloodType) returns(b:bool)
+        requires Valid() && ValidGroup();ensures Valid()&& ValidGroup();
+        ensures bType == BR.BloodType.A  ==> b <==> !(this.A.isEmpty() && this.O.isEmpty())
+        ensures bType == BR.BloodType.B  ==> b <==> !(this.B.isEmpty() && this.O.isEmpty())
+        ensures bType == BR.BloodType.AB ==> b <==> !(this.A.isEmpty() && this.B.isEmpty() && this.AB.isEmpty() && this.O.isEmpty())
+        ensures bType == BR.BloodType.O  ==> b <==> !(this.O.isEmpty())
+        { 
+            match(bType)
+            {
+                case A => 
+                { 
+                    var existsA := this.A.Empty();
+                    existsA := !existsA;
+                    var existsO := this.O.Empty();
+                    existsO := !existsO;
+                    b := existsA && existsO;
+                }
+                case B => 
+                { 
+		    var existsB := this.B.Empty();
+		    existsB := !existsB;
+                    assert(existsB ==> !this.B.isEmpty());
+		    var existsO := this.O.Empty();
+		    existsO := !existsO;
+                    assert(existsO ==> !this.O.isEmpty());
+		    b := existsB && existsO;
+                    assert(!(this.A.isEmpty() && this.O.isEmpty()));
+                }
+                case AB => 
+                { 
+		    var existsA := this.A.Empty();
+		    existsA := !existsA;
+		    var existsB := this.B.Empty();
+		    existsB := !existsB;
+		    var existsO := this.O.Empty();
+		    existsO := !existsO;
+		    b := existsA && existsB && existsO;
+                }
+                case O => 
+                { 
+		    var existsO := this.O.Empty();
+		    existsO := !existsO;
+		    b := existsO;
+                }
+            }
+            b := false;
+        }
+  */
+
     }
 
 }
+

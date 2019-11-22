@@ -1,8 +1,16 @@
 include "dateRep.dfy"
+include "quack.dfy"
 module BloodRep {
   import D = DateRep
-  datatype BloodType = A | B | AB | O // A = 0, B = 1, AB = 2, O = 3
+
+  // Enumeration
+  // A = 0, B = 1, AB = 2, O = 3
+  datatype BloodType = A | B | AB | O   
   
+  method complete_enum(b: BloodType)
+    ensures b == A || b == B || b == AB || b == O
+  { }
+
   method createBt(bType: int) returns(bt: BloodType)
   {
     if(bType == 0) {return A;}
@@ -37,6 +45,7 @@ module BloodRep {
     case AB => return 3;
     case O => return 4;
   }
+
 
   class BloodRecord
   {
@@ -84,6 +93,8 @@ module BloodRep {
       b := !b;
     }
 
+    
+
     predicate pNotExpired()
       reads this
     {
@@ -128,6 +139,15 @@ module BloodRep {
 
     }
 
+  }
+
+  predicate typeMatch(t1:BloodRecord, t2:BloodType)
+  {
+    match t1.bType
+    case A => t2 == A
+    case B => t2 == B
+    case O => t2 == O
+    case AB => t2 == AB 
   }
 
   method Test() 
