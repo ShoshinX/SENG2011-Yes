@@ -1,5 +1,4 @@
 include "dateRep.dfy"
-include "quack.dfy"
 module BloodRep {
   import D = DateRep
 
